@@ -1,0 +1,115 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+  .container > div {
+    width: 80%;
+  }
+
+  .hero{
+    padding:20px 0px;
+    width:100%;
+  }
+
+.main {
+  width: 100%;
+  height: calc(90vh - 200px);
+  padding: 20px 0px;
+  background-color: #34728f;
+  border-radius: 8px;
+}
+
+
+.logo {
+  color: #ff6a00;
+}
+
+
+  .title {
+    font-family: 'Luckiest Guy', cursive;
+    font-weight: 800;
+    color: #ffd800;
+    text-shadow: 7px 7px 10px #000000;
+    text-align: center;
+  }
+
+  .subtitle {
+    padding: 6px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .player-name {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 44px;
+    font-weight: 500;
+    color: #81db1d;
+    text-shadow: 5px 5px 5px #214a5e;
+    text-align: center;
+  }
+
+
+.flex-container-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-container-centerv {
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  vertical-align: middle;
+}
+.flex-container-centerh{
+  display:flex;
+  justify-content:center;
+  flex-direction:row;
+  height:100%;
+}
+
+.btn-large {
+  padding: 25px;
+  text-align:center;
+  font-weight: 800;
+  background-color: #ffd800;
+  border-radius: 5px;
+}
+  .btn-large > a {
+    color: #34728f;
+    text-decoration: none;
+  }
+
+.btn-large:hover {
+  cursor:pointer;
+  background-color:rgba(255, 216, 0, 0.80);
+}
+.btn-large:active {
+  background-color:rgba(255, 216, 0, 0.55)
+}
+
+
+.btn {
+  margin: 20px;
+  padding: 15px;
+  background-color: #ffd800;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  color: #000000;
+}
+  .btn:hover {
+    cursor: pointer;
+    color: #ff6a00;
+    background-color: rgba(255, 216, 0, 0.80);
+  }
+  .btn:hover > a {
+    color: #ff6a00;
+  }
+  .btn:active {
+    background-color: rgba(255, 216, 0, 0.55)
+  }
+
+

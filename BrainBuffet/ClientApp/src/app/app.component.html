@@ -1,0 +1,69 @@
+<div class="container">
+  <div id="contain-non-fluid">
+    <div class="hero">
+      <h1 class="title strokeme"> Brain <i class="fab fa-envira logo"></i> Buffet! </h1>
+      <h2 class="subtitle">The game for brainiacs</h2>
+    </div>
+    <div class="main">
+
+      <div class="flex-container-centerh" *ngIf="startupState=='begin'">
+        <div class="flex-container-centerv">
+          <div class="flex-container-col">
+            <div *ngIf="!loading"><input type="text" [(ngModel)]="player"  placeholder="Your Name Here" (keydown)="keyDown($event)" /></div>
+            <h2 class="btn-large" *ngIf="!loading" (click)="start()">START</h2>
+            <div *ngIf="loading" class="player-name">{{player}}</div>
+            <h4 style="text-align:center" *ngIf="loading">Stand by while we teleport into your brain!</h4>
+            <div *ngIf="loading" class="loader">Loading...</div>
+          </div>
+          
+
+        </div>
+
+      </div>
+
+      <div class="flex-container-centerh" *ngIf="startupState=='chooser'">
+        <div class="flex-container-centerv">
+          <div class="flex-container-col">
+            <div>
+              <h3 style="text-align:center;">
+                Choose your role.
+              </h3>
+            </div>
+            <div>
+              <h4 *ngIf="!hasHost" class="btn" (click)="choose('host')">
+                <i class="fas fa-microphone-alt"></i> Host
+              </h4>
+              <h4 *ngIf="hasHost" class="btn btn-disabled">
+                <i class="fas fa-microphone-alt"></i> Host
+              </h4>
+
+              <h4 class="btn" (click)="choose('team1')">
+                <i class="fab fa-rebel"></i> Team 1
+              </h4>
+              <h4 class="btn" (click)="choose('team2')">
+                <i class="fab fa-empire"></i> Team 2
+              </h4>
+              <h4 class="btn" (click)="choose('spectator')">
+                <i class="fas fa-users"></i> Spectator
+              </h4>
+
+            </div>
+            <div>
+              <table>
+                <tr *ngFor="let m of messages" ><td>{{m}}</td></tr>
+              </table>
+            </div>
+
+
+          </div>
+      </div>
+
+      </div>
+
+
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+
+</div>
