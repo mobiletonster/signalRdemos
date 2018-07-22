@@ -3,6 +3,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { HubConnection } from '@aspnet/signalr';
 import * as signalR from '@aspnet/signalr';
 import { GameSession } from './models/gameSession';
+import { Participant } from './models/participant';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,7 @@ import { GameSession } from './models/gameSession';
 })
 export class AppComponent implements OnInit {
   title = 'Brain Buffet';
-  public _hubConnection: HubConnection | undefined;
-  public async: any;
-  message: string = '';
-  messages: string[] = [];
+  public _hubConnection: HubConnection | undefined;s
   _gameSession: GameSession = new GameSession();
   startupState: string = "begin";
   loading: boolean = false;
@@ -31,12 +29,9 @@ export class AppComponent implements OnInit {
 
 
 
-    this._hubConnection.on('Joined', (gameSession:GameSession) => {
-      //this.checkGameSessionState(gameSession);
-      console.log("JOINED");
-      console.log(gameSession);
+    this._hubConnection.on('Joined', (gameSession: GameSession) => {
+      // on join, get the game session state.
       this._gameSession = gameSession;
-      // this.messages.push(received);
     })
 
     //this._hubConnection.on('Connected', (gameSession: GameSession) => {
@@ -59,13 +54,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public sendMesage(message:string): void {
-    const data = `Sent: ${message}`;
-    if (this._hubConnection) {
-      this._hubConnection.invoke('Send', data);
-    }
-    this.messages.push(data);
-  }
+
 
   public join(role: string): void {
     if (this._hubConnection) {
