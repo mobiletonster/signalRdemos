@@ -19,6 +19,14 @@ namespace BrainBuffet
             }
         }
 
+        public int Available
+        {
+            get
+            {
+                return 4 - Members.Count;
+            }
+        }
+
         public Team(int id, string name)
         {
             Id = id;

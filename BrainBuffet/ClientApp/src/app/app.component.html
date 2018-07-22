@@ -30,21 +30,21 @@
               </h3>
             </div>
             <div>
-              <h4 *ngIf="!hasHost" class="btn" (click)="choose('host')">
-                <i class="fas fa-microphone-alt"></i> Host
+              <h4 *ngIf="!_gameSession.host" class="btn" (click)="choose('host')">
+                <i class="fas fa-microphone-alt"></i> Host <span class="badge">1</span>
               </h4>
-              <h4 *ngIf="hasHost" class="btn btn-disabled">
-                <i class="fas fa-microphone-alt"></i> Host
+              <h4 *ngIf="_gameSession.host" class="btn-disabled">
+                <i class="fas fa-microphone-alt"></i> {{_gameSession?.host?.name}}
               </h4>
 
-              <h4 class="btn" (click)="choose('team1')">
-                <i class="fab fa-rebel"></i> Team 1
+              <h4 [ngClass]="isDisabledBtn(_gameSession?.team1?.isFull)" (click)="choose('team1')">
+                <i class="fab fa-rebel"></i> Team 1 <span class="badge">{{_gameSession?.team1?.available}}</span>
               </h4>
-              <h4 class="btn" (click)="choose('team2')">
-                <i class="fab fa-empire"></i> Team 2
+              <h4 [ngClass]="isDisabledBtn(_gameSession?.team2?.isFull)"  (click)="choose('team2')">
+                <i class="fab fa-empire"></i> Team 2  <span class="badge">{{_gameSession?.team2?.available}}</span>
               </h4>
               <h4 class="btn" (click)="choose('spectator')">
-                <i class="fas fa-users"></i> Spectator
+                <i class="fas fa-users"></i> Spectator <span class="badge">{{_gameSession?.spectators?.length}}</span>
               </h4>
 
             </div>

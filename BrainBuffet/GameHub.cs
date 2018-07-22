@@ -10,10 +10,10 @@ namespace BrainBuffet
 {
     public class GameHub:Hub
     {
-        public static GameSession _gameSession;
+        public static GameSession _gameSession= new GameSession();
         public GameHub()
         {
-            _gameSession = new GameSession();
+            // _gameSession = new GameSession();
         }
         public Task Send(string data)
         {
@@ -22,19 +22,21 @@ namespace BrainBuffet
 
         public async Task Join(string role,string player)
         {
+            var participant = new Participant(Context.ConnectionId, player);
             switch (role)
             {
                 case "host":
-                    SetHost(new Participant(Context.ConnectionId, player));
+                    SetHost(participant);
                     break;
                 case "team1":
-                    break;
                 case "team2":
+                case "spectator":
+                    JoinTeam(role, participant);
                     break;
                 default:
                     break;
             }
-            await Clients.All.SendAsync("Send", _gameSession);
+            await Clients.All.SendAsync("Joined", _gameSession);
         }
 
         public bool SetHost(Participant participant)
@@ -47,10 +49,27 @@ namespace BrainBuffet
             return false;
         }
 
+        public bool JoinTeam(string team ,Participant participant)
+        {
+            if (team == "team1")
+            {
+                return _gameSession.Team1.Add(participant);
+            } else if (team == "team2")
+            {
+                return _gameSession.Team2.Add(participant);
+            }
+            else if(team=="spectator")
+            {
+                _gameSession.Spectators.Add(participant);
+                return true;
+            }
+            return false;
+        }
+
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
-            await Clients.All.SendAsync("Send", _gameSession);
+            await Clients.All.SendAsync("Joined", _gameSession);
         }
 
         public async override Task OnDisconnectedAsync(Exception exception)

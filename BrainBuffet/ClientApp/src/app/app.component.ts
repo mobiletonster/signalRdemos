@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   public _hubConnection: HubConnection | undefined;
   public async: any;
   message: string = '';
-  messages: string[]= [];
+  messages: string[] = [];
+  _gameSession: GameSession = new GameSession();
   startupState: string = "begin";
   loading: boolean = false;
   player: string;
@@ -30,20 +31,24 @@ export class AppComponent implements OnInit {
 
 
 
-    this._hubConnection.on('Send', (data: any) => {
-      this.checkGameSessionState(data);
-      const received = `Received: ${data}`;
-      console.log(data);
+    this._hubConnection.on('Joined', (gameSession:GameSession) => {
+      //this.checkGameSessionState(gameSession);
+      console.log("JOINED");
+      console.log(gameSession);
+      this._gameSession = gameSession;
       // this.messages.push(received);
     })
 
-    this._hubConnection.on('Connected', (data: GameSession) => {
-      this.checkGameSessionState(data);
-    })
+    //this._hubConnection.on('Connected', (gameSession: GameSession) => {
+    //  //this.checkGameSessionState(gameSession);
+    //  console.log(gameSession);
+    //  this._gameSession = gameSession;
+    //})
   }
 
   checkGameSessionState(gameSession: GameSession) {
     if (gameSession.host) {
+      this._gameSession = gameSession;
       console.log("we have a host.");
     }
     if (gameSession.team1.isFull) {
@@ -97,6 +102,14 @@ export class AppComponent implements OnInit {
 
   choose(role: string) {
     this.join(role);
+  }
+
+  isDisabledBtn(state: boolean) {
+    if (state) {
+      return 'btn-disabled';
+    } else {
+      return 'btn';
+    }
   }
 }
 
