@@ -39,7 +39,8 @@
         <div class="flex-container-centerv">
           <div class="flex-container-col">
             <div>
-              <div class="player-name">{{_playerName}}
+              <div class="player-name">
+                {{_playerName}}
               </div>
               <h3 style="text-align:center;">
                 Choose your role.
@@ -77,9 +78,38 @@
 
       <!-- TEAM page -->
       <div class="flex-container-centerh" *ngIf="_startupState=='team'">
-        <div class="flex-container-centerv">
-          <div class="flex-container-col">
-            <h2>{{_participant?.role}} <i [ngClass]="roleClass(_participant?.role)"></i></h2>
+        <div class="flex-container-centerv" style="width:90%">
+          <div class="flex-container-col" style="text-align:center">
+            <h2 class="capitalize">{{_participant?.role}} <i [ngClass]="roleClass(_participant?.role)"></i></h2>
+          </div>
+          <div>
+
+            <table class="team" id="team1">
+              <thead>
+                <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let member of _gameSession.team1?.members">
+                  <td colspan="2">{{member.name}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Score:</strong></td>
+                  <td><strong></strong></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="team" id="team2">
+              <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
+              <tr *ngFor="let member of _gameSession.team2?.members">
+                <td colspan="2">{{member.name}}</td>
+              </tr>
+              <tr>
+                <td><strong>Score:</strong></td>
+                <td><strong></strong></td>
+              </tr>
+            </table>
+
           </div>
         </div>
       </div>
@@ -89,6 +119,33 @@
         <div class="flex-container-centerv">
           <div class="flex-container-col">
             <h2>SPECTATOR <i [ngClass]="roleClass(_participant?.role)"></i></h2>
+          </div>
+          <div>
+            <table class="team" id="team1">
+              <thead>
+                <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let member of _gameSession.team1?.members">
+                  <td colspan="2">{{member.name}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Score:</strong></td>
+                  <td><strong></strong></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="team" id="team2">
+              <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
+              <tr *ngFor="let member of _gameSession.team2?.members">
+                <td colspan="2">{{member.name}}</td>
+              </tr>
+              <tr>
+                <td><strong>Score:</strong></td>
+                <td><strong></strong></td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>

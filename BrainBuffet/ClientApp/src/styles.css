@@ -103,7 +103,16 @@ body {
   }
 }
 
+strong{
+  font-weight:800;
+}
+em{
+  font-style:italic;
+}
 
+.capitalize {
+  text-transform:capitalize;
+}
 
   input[type=text] {
     background-color: white;

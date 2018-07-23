@@ -7,10 +7,10 @@
     width: 80%;
   }
 
-  .hero{
-    padding:20px 0px;
-    width:100%;
-  }
+.hero {
+  padding: 20px 0px;
+  width: 100%;
+}
 
 .main {
   width: 100%;
@@ -21,48 +21,48 @@
 }
 
 .top-space {
-  margin-top:80px;
+  margin-top: 80px;
 }
 
 .logo {
   color: #ff6a00;
 }
 
-  .title {
-    font-family: 'Luckiest Guy', cursive;
-    font-weight: 800;
-    color: #ffd800;
-    text-shadow: 7px 7px 10px #000000;
-    text-align: center;
-  }
+.title {
+  font-family: 'Luckiest Guy', cursive;
+  font-weight: 800;
+  color: #ffd800;
+  text-shadow: 7px 7px 10px #000000;
+  text-align: center;
+}
 
-  .subtitle {
-    padding: 6px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    font-weight: 400;
-    text-align: center;
-  }
+.subtitle {
+  padding: 6px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 400;
+  text-align: center;
+}
 
-  .player-name {
-    font-family: 'Luckiest Guy', cursive;
-    font-size: 44px;
-    font-weight: 500;
-    color: #81db1d;
-    text-shadow: 5px 5px 5px #214a5e;
-    text-align: center;
-    margin-top:-50px;
-  }
+.player-name {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 44px;
+  font-weight: 500;
+  color: #81db1d;
+  text-shadow: 5px 5px 5px #214a5e;
+  text-align: center;
+  margin-top: -50px;
+}
 
-  .logged-in {
-    font-family: 'Luckiest Guy', Woodcut;
-    font-size:18px;
-    color:white;
-    text-shadow: 3px 3px 3px #214a5e;
-    text-align: right;
-    padding-right:10px;
-    float:right;
-  }
+.logged-in {
+  font-family: 'Luckiest Guy', Woodcut;
+  font-size: 18px;
+  color: white;
+  text-shadow: 3px 3px 3px #214a5e;
+  text-align: right;
+  padding-right: 10px;
+  float: right;
+}
 
 
 .flex-container-col {
@@ -72,18 +72,19 @@
 
 .flex-container-centerv {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   justify-content: center;
   vertical-align: middle;
 }
-.flex-container-centerh{
-  display:flex;
-  justify-content:center;
-  flex-direction:row;
-  height:100%;
+
+.flex-container-centerh {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  height: 100%;
 }
 
-.btn > .badge , .btn-disabled > .badge {
+.btn > .badge, .btn-disabled > .badge {
   padding: 4px;
   background-color: #e02e1c;
   border-radius: 40px;
@@ -91,7 +92,7 @@
   font-size: 16px;
   height: 18px;
   width: 18px;
-  float:right;
+  float: right;
 }
 
 .btn-disabled > .badge {
@@ -100,23 +101,25 @@
 
 .btn-large {
   padding: 25px;
-  text-align:center;
+  text-align: center;
   font-weight: 800;
   background-color: #ffd800;
   border-radius: 5px;
 }
+
   .btn-large > a {
     color: #34728f;
     text-decoration: none;
   }
 
-.btn-large:hover {
-  cursor:pointer;
-  background-color:rgba(255, 216, 0, 0.80);
-}
-.btn-large:active {
-  background-color:rgba(255, 216, 0, 0.55)
-}
+  .btn-large:hover {
+    cursor: pointer;
+    background-color: rgba(255, 216, 0, 0.80);
+  }
+
+  .btn-large:active {
+    background-color: rgba(255, 216, 0, 0.55)
+  }
 
 
 .btn {
@@ -128,14 +131,17 @@
   font-weight: 500;
   color: #000000;
 }
+
   .btn:hover {
     cursor: pointer;
     color: #ff6a00;
     background-color: rgba(255, 216, 0, 0.80);
   }
-  .btn:hover > a {
-    color: #ff6a00;
-  }
+
+    .btn:hover > a {
+      color: #ff6a00;
+    }
+
   .btn:active {
     background-color: rgba(255, 216, 0, 0.55)
   }
@@ -148,4 +154,58 @@
   text-align: center;
   font-weight: 500;
   color: #214a5e;
+}
+
+.team {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 120px;
+}
+
+  .team td, .team th {
+    border: none;
+    padding: 10px;
+    text-transform:capitalize;
+  }
+
+  .team tbody {
+    background-color: #f2f2f2;
+  }
+
+    .team tbody tr:last-child > td:first-child {
+      border-bottom-left-radius: 5px;
+    }
+
+  .team tbody tr:last-child > td:last-child {
+    border-bottom-right-radius: 5px;
+  }
+
+
+    .team tr:hover {
+      background-color: #ddd;
+    }
+
+  .team th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+#team1 {
+  float: left;
+}
+
+#team2 {
+  float: right;
+}
+
+#team1 th {
+  background-color: rgba(23, 36, 142, 0.73);
+}
+
+#team2 th {
+  background-color: rgba(142, 23, 23, 0.73);
 }

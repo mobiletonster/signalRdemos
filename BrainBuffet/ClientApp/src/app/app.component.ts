@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:8000/api/gamehub')
+      .withUrl('/api/gamehub')
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
@@ -57,8 +57,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // start button pressed.
-  start_click() {
+  // Click Events
+  public start_click() {
     if (this._playerName == undefined || this._playerName.length < 2) {
       alert('Please enter your name!')
       return;
@@ -90,6 +90,7 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // Class Togglers
   isDisabledBtn(state: boolean) {
     if (state) {
       return 'btn-disabled';
