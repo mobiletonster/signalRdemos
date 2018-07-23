@@ -170,6 +170,8 @@
 
   .team tbody {
     background-color: #f2f2f2;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 
     .team tbody tr:last-child > td:first-child {

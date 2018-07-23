@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   _playerName: string;
 
   ngOnInit() {
+
     this._hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('/api/gamehub')
       .configureLogging(signalR.LogLevel.Information)
