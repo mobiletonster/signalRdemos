@@ -31,7 +31,7 @@ namespace BrainBuffet.Controllers
         {
             var count = _questions.Count();
             int next = GetRandomNumber(1, count + 1);
-            var question = _questions.Where(m => m.Id == next);
+            var question = _questions.FirstOrDefault(m => m.Id == next);
             return Ok(question);
         }
 
@@ -52,7 +52,7 @@ namespace BrainBuffet.Controllers
                 QuestionType = "image",
                 ImageUrl = "http://4.bp.blogspot.com/_Nyiipr-yxiQ/TPTRR8kJWiI/AAAAAAAAOFI/B15zJnI8C_g/s1600/Elvis+Presley+05.jpg",
                 QuestionText = "Who is this?",
-                AnswerText = "Jacha-chacha-chacha-chow!"
+                AnswerText = "Elvis Presley"
             });
             q.Add(new Question()
             {

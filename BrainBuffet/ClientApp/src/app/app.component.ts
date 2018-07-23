@@ -6,6 +6,7 @@ import { GameSession } from './models/gameSession';
 import { Participant } from './models/participant';
 import { ChatMessage } from './models/ChatMessage';
 import { QuestionService } from './services/question.service';
+import { Question } from './models/Question';
 
 @Component({
   selector: 'app-root',
@@ -24,13 +25,14 @@ export class AppComponent implements OnInit {
   _team1Messages: ChatMessage[] = new Array<ChatMessage>();
   _team2Messages: ChatMessage[] = new Array<ChatMessage>();
   _spectatorMessages: ChatMessage[] = new Array<ChatMessage>();
+  _question: Question;
 
   constructor(private _questionService: QuestionService) { }
 
   ngOnInit() {
 
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/api/gamehub')
+      .withUrl('http://localhost:8000/api/gamehub')
       .configureLogging(signalR.LogLevel.Debug)
       .build();
 
@@ -52,7 +54,11 @@ export class AppComponent implements OnInit {
     this._hubConnection.on('Left', (participant: Participant) => {
       // on leave, reset the user back to a state where they can rejoin.
       this._participant = participant;
-      this._startupState="chooser"
+      this._startupState = "chooser"
+      this._question = null;
+      this._spectatorMessages = null;
+      this._team1Messages = null;
+      this._team2Messages = null;
     })
 
     this._hubConnection.on('GameState', (gameSession: GameSession) => {
@@ -61,6 +67,11 @@ export class AppComponent implements OnInit {
 
     this._hubConnection.on('TeamMessage', (team:string, name: string, message: string) => {
       this.addChatMessage(team, new ChatMessage(name, message, false));
+    })
+
+    this._hubConnection.on('LoadQuestion', (question: Question) => {
+      this._question = question;
+      console.log(question);
     })
   }
 
@@ -121,9 +132,23 @@ export class AppComponent implements OnInit {
   }
 
   public getRandomQuestion_click() {
+    this._question = null;
     this._questionService.getRandomQuestion().subscribe(question => {
-
+      this._question = question;
+      console.log(question);
     })
+  }
+
+  public push_click(question: Question) {
+    let pushQuestion = new Question();
+    pushQuestion.id = question.id;
+    pushQuestion.questionType = question.questionType;
+    pushQuestion.questionText = question.questionText;
+    pushQuestion.imageUrl = question.imageUrl;
+    if (this._hubConnection) {
+      this._hubConnection.invoke('PushQuestion', pushQuestion);
+      this._question.pushed = true;
+    }
   }
 
   // ngClass Togglers

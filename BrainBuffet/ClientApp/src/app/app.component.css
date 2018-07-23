@@ -21,7 +21,11 @@
 }
 
 .top-space {
-  margin-top: 80px;
+  margin-top: 60px;
+}
+
+.top-space-half {
+  margin-top:30px;
 }
 
 .logo {
@@ -81,7 +85,12 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
-  height: 100%;
+}
+
+.flex-container-justifyh {
+  display:flex;
+  justify-content:space-between;
+  flex-direction:row;
 }
 
 .btn > .badge, .btn-disabled > .badge {
@@ -160,7 +169,6 @@
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 120px;
-  margin-top:10px;
 }
 
   .team td, .team th {
@@ -272,4 +280,46 @@
   margin:2px;
   padding:8px;
   border-radius: .4em;
+}
+
+  .game-image {
+    max-width: 200px;
+    margin: 8px;
+    border-radius: 5px;
+  }
+
+  .game-text {
+    font-family: 'Cabin', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    padding: 8px;
+    color: #ffd800;
+    text-shadow: 4px 4px 4px #000000;
+    text-align: center;
+    letter-spacing: 2px;
+    max-width: 200px;
+  }
+
+  .answer-text {
+    font-family: 'Cabin', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    padding: 8px;
+    color: #81db1d;
+    text-shadow: 4px 4px 4px #000000;
+    text-align: center;
+    letter-spacing: 2px;
+    max-width: 200px;
+  }
+
+  .game-container {
+    background-color: #214a5e;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+@media screen and (min-width:500px) {
+  .game-image, .game-text, .answer-text {
+    max-width: 400px;
+  }
 }

@@ -10,6 +10,7 @@ namespace BrainBuffet
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int Score { get; set; }
         public List<Participant> Members { get; set; }
         public bool IsFull
         {

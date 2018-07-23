@@ -73,7 +73,8 @@
           <div class="flex-container-col" style="text-align:center">
             <h2>HOST <i [ngClass]="roleClass(_participant?.role)"></i></h2>
           </div>
-          <div class="flex-container-centerh top-space">
+          <div class="flex-container-justifyh top-space-half">
+            <!-- Team 1 Scores -->
             <table class="team" id="team1">
               <thead>
                 <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
@@ -84,14 +85,14 @@
                 </tr>
                 <tr>
                   <td><strong>Score:</strong></td>
-                  <td><strong></strong></td>
+                  <td><strong>{{_gameSession?.team1?.score}}</strong></td>
                 </tr>
               </tbody>
             </table>
-            <!-- GAME AREA -->
             <div>
-              <h2>hello</h2>
+              <div class="btn" style="width:150px;" href="javascript:void(0)" (click)="getRandomQuestion_click()">Next Question</div>
             </div>
+            <!-- Team 2 Scores -->
             <table class="team" id="team2">
               <thead>
                 <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
@@ -102,11 +103,26 @@
                 </tr>
                 <tr>
                   <td><strong>Score:</strong></td>
-                  <td><strong></strong></td>
+                  <td><strong>{{_gameSession?.team2?.score}}</strong></td>
                 </tr>
               </tbody>
             </table>
           </div>
+          <!-- GAME AREA -->
+          <div class="flex-container-centerh top-space-half" style="width:100%">           
+            <div class="flex-container-col">
+              <div class="game-container" *ngIf="_question">
+                <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
+                <p class="game-text">{{_question?.questionText}}</p>
+                <div class="btn" *ngIf="!_question?.pushed" (click)="push_click(_question)">Push to contestants</div>
+                <div class="btn" *ngIf="!_question?.reveal" (click)="_question.reveal=true">Reveal answer</div>
+                <div class="answer-text" *ngIf="_question?.reveal">
+                  {{_question?.answerText}}
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -116,8 +132,8 @@
           <div class="flex-container-col" style="text-align:center">
             <h2 class="capitalize">{{_participant?.role}} <i [ngClass]="roleClass(_participant?.role)"></i></h2>
           </div>
-          <div>
-
+          <div class="flex-container-justifyh top-space-half">
+            <!-- Team 1 Scores -->
             <table class="team" id="team1">
               <thead>
                 <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
@@ -128,11 +144,11 @@
                 </tr>
                 <tr>
                   <td><strong>Score:</strong></td>
-                  <td><strong></strong></td>
+                  <td><strong>{{_gameSession?.team1?.score}}</strong></td>
                 </tr>
               </tbody>
             </table>
-
+            <!-- Team 2 Scores -->
             <table class="team" id="team2">
               <thead>
                 <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
@@ -143,11 +159,23 @@
                 </tr>
                 <tr>
                   <td><strong>Score:</strong></td>
-                  <td><strong></strong></td>
+                  <td><strong>{{_gameSession?.team2?.score}}</strong></td>
                 </tr>
               </tbody>
             </table>
 
+          </div>
+          <!-- GAME AREA -->
+          <div class="flex-container-centerh top-space-half" style="width:100%">
+            <div class="flex-container-col">
+              <div class="game-container" *ngIf="_question">
+                <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
+                <p class="game-text">{{_question?.questionText}}</p>
+                <div class="answer-text" *ngIf="_question?.reveal">
+                  {{_question?.answerText}}
+                </div>
+              </div>
+            </div>
           </div>
           <div>
             <!-- TEAM 1 CHAT -->
@@ -156,7 +184,7 @@
               <!-- Team 1 chat log-->
               <div id="team1-messages" class="chatbox-messages">
                 <ul>
-                  <li *ngFor="let m of _team1Messages.slice().reverse()">
+                  <li *ngFor="let m of _team1Messages?.slice().reverse()">
                     <span [ngClass]="chatBubble(m.isSelf)">
                       <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
                     </span>
@@ -169,13 +197,14 @@
                 <a href="javascript:void(0)" class="send-btn" (click)="sendMessage_click()"><i class="fas fa-chevron-circle-right"></i></a>
               </div>
             </div>
+
             <!-- TEAM 2 CHAT -->
             <div *ngIf="_participant.role=='team2'" class="chatbox">
               <h4 class="capitalize"><i class="fas fa-comments"></i> {{_participant?.role}} chat </h4>
               <!-- Team 2 chat log-->
               <div id="team2-messages" class="chatbox-messages">
                 <ul>
-                  <li *ngFor="let m of _team2Messages.slice().reverse()">
+                  <li *ngFor="let m of _team2Messages?.slice().reverse()">
                     <span [ngClass]="chatBubble(m.isSelf)">
                       <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
                     </span>
@@ -199,8 +228,8 @@
           <div class="flex-container-col" style="text-align:center">
             <h2>SPECTATOR <i [ngClass]="roleClass(_participant?.role)"></i></h2>
           </div>
-          <div>
-
+          <div class="flex-container-justifyh top-space-half">
+            <!-- Team 1 Scores -->
             <table class="team" id="team1">
               <thead>
                 <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
@@ -211,11 +240,11 @@
                 </tr>
                 <tr>
                   <td><strong>Score:</strong></td>
-                  <td><strong></strong></td>
+                  <td><strong>{{_gameSession?.team1?.score}}</strong></td>
                 </tr>
               </tbody>
             </table>
-
+            <!-- Team 2 Scores -->
             <table class="team" id="team2">
               <thead>
                 <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
@@ -226,19 +255,32 @@
                 </tr>
                 <tr>
                   <td><strong>Score:</strong></td>
-                  <td><strong></strong></td>
+                  <td><strong>{{_gameSession?.team2?.score}}</strong></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="flex-container-centerh"  style="width:100%">
+          <!-- GAME AREA -->
+          <div class="flex-container-centerh top-space-half" style="width:100%">
+            <div class="flex-container-col">
+              <div class="game-container" *ngIf="_question">
+                <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
+                <p class="game-text">{{_question?.questionText}}</p>
+                <div class="answer-text" *ngIf="_question?.reveal">
+                  {{_question?.answerText}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-container-centerh" style="width:100%">
             <!-- TEAM 1 CHAT -->
             <div class="chatbox">
               <h4 class="capitalize"><i class="fas fa-comments"></i> Team 1 </h4>
               <!-- Team 1 chat log-->
               <div id="team1-messages" class="chatbox-messages">
                 <ul>
-                  <li *ngFor="let m of _team1Messages.slice().reverse()">
+                  <li *ngFor="let m of _team1Messages?.slice().reverse()">
                     <span [ngClass]="chatBubble(m.isSelf)">
                       <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
                     </span>
@@ -253,7 +295,7 @@
               <!-- Spectators chat log-->
               <div id="spectator-messages" class="chatbox-messages">
                 <ul>
-                  <li *ngFor="let m of _spectatorMessages.slice().reverse()">
+                  <li *ngFor="let m of _spectatorMessages?.slice().reverse()">
                     <span [ngClass]="chatBubble(m.isSelf)">
                       <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
                     </span>
@@ -273,7 +315,7 @@
               <!-- Team 2 chat log-->
               <div id="team2-messages" class="chatbox-messages">
                 <ul>
-                  <li *ngFor="let m of _team2Messages.slice().reverse()">
+                  <li *ngFor="let m of _team2Messages?.slice().reverse()">
                     <span [ngClass]="chatBubble(m.isSelf)">
                       <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
                     </span>

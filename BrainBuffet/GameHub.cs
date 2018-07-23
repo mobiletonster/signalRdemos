@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using BrainBuffet.Models;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,6 @@ namespace BrainBuffet
             await Clients.All.SendAsync("GameState", _gameSession);
             await Clients.Caller.SendAsync("Joined", participant);
         }
-
         public async Task QuitRole(Participant participant)
         {
             await Groups.RemoveFromGroupAsync(participant.ConnectionId, participant.Role);
@@ -64,6 +64,10 @@ namespace BrainBuffet
                 // let spectators listen in on team1 and team2 chats.
                 await Clients.Group("spectator").SendAsync("TeamMessage", participant.Role, participant.Name, message);
             }
+        }
+        public async Task PushQuestion(Question question)
+        { 
+            await Clients.Groups("spectator","team1","team2").SendAsync("LoadQuestion", question);
         }
         #endregion
 

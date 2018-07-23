@@ -4,4 +4,6 @@ export class Question {
   public imageUrl: string;
   public questionText: string;
   public answerText: string;
+  public reveal: boolean;
+  public pushed: boolean;
 }
