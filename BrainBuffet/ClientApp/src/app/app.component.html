@@ -23,7 +23,7 @@
       <div class="flex-container-centerh top-space" *ngIf="_startupState=='begin'">
         <div class="flex-container-centerv">
           <div *ngIf="!_loading" class="flex-container-col">
-            <div><input type="text" [(ngModel)]="_playerName" placeholder="Your Name Here" (keydown)="keyDown($event)" /></div>
+            <div><input class="big-input" type="text" [(ngModel)]="_playerName" placeholder="Your Name Here" (keydown)="keyDown($event)" /></div>
             <h2 class="btn-large" (click)="start_click()">START</h2>
           </div>
           <div *ngIf="_loading" class="flex-container-col">
@@ -69,9 +69,43 @@
 
       <!-- HOST Page -->
       <div class="flex-container-centerh" *ngIf="_startupState=='host'">
-        <div class="flex-container-centerv">
-          <div class="flex-container-col">
+        <div class="flex-container-centerv" style="width:95%">
+          <div class="flex-container-col" style="text-align:center">
             <h2>HOST <i [ngClass]="roleClass(_participant?.role)"></i></h2>
+          </div>
+          <div class="flex-container-centerh top-space">
+            <table class="team" id="team1">
+              <thead>
+                <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let member of _gameSession.team1?.members">
+                  <td colspan="2">{{member.name}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Score:</strong></td>
+                  <td><strong></strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- GAME AREA -->
+            <div>
+              <h2>hello</h2>
+            </div>
+            <table class="team" id="team2">
+              <thead>
+                <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let member of _gameSession.team2?.members">
+                  <td colspan="2">{{member.name}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Score:</strong></td>
+                  <td><strong></strong></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -116,40 +150,53 @@
 
           </div>
           <div>
-            <!-- Chat Box -->
-            <div style="white-space:nowrap">
-              <input type="text" [(ngModel)]="_chat" (keydown)="messageKeyDown($event)" />
-              <a href="javascript:void(0)" class="send-btn" (click)="sendMessage_click()"><i class="fas fa-chevron-circle-right"></i></a>
+            <!-- TEAM 1 CHAT -->
+            <div class="chatbox" *ngIf="_participant.role=='team1'">
+              <h4 class="capitalize"><i class="fas fa-comments"></i> {{_participant?.role}} chat </h4>
+              <!-- Team 1 chat log-->
+              <div id="team1-messages" class="chatbox-messages">
+                <ul>
+                  <li *ngFor="let m of _team1Messages.slice().reverse()">
+                    <span [ngClass]="chatBubble(m.isSelf)">
+                      <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <!-- Chat textbox -->
+              <div style="white-space:nowrap">
+                <input class="chatbox-input" type="text" [(ngModel)]="_chat" (keydown)="messageKeyDown($event)" />
+                <a href="javascript:void(0)" class="send-btn" (click)="sendMessage_click()"><i class="fas fa-chevron-circle-right"></i></a>
+              </div>
             </div>
-            <!-- Team 1 chat log-->
-            <div *ngIf="_participant.role=='team1'" style="overflow-y: auto; height:300px;max-width:500px;">
-              <ul>
-                <li *ngFor="let m of _team1Messages.slice().reverse()">
-                  <span [ngClass]="chatBubble(m.isSelf)">
-                    <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
-                  </span>
-                </li>
-              </ul>
+            <!-- TEAM 2 CHAT -->
+            <div *ngIf="_participant.role=='team2'" class="chatbox">
+              <h4 class="capitalize"><i class="fas fa-comments"></i> {{_participant?.role}} chat </h4>
+              <!-- Team 2 chat log-->
+              <div id="team2-messages" class="chatbox-messages">
+                <ul>
+                  <li *ngFor="let m of _team2Messages.slice().reverse()">
+                    <span [ngClass]="chatBubble(m.isSelf)">
+                      <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <!-- Chat textbox -->
+              <div style="white-space:nowrap">
+                <input class="chatbox-input" type="text" [(ngModel)]="_chat" (keydown)="messageKeyDown($event)" />
+                <a href="javascript:void(0)" class="send-btn" (click)="sendMessage_click()"><i class="fas fa-chevron-circle-right"></i></a>
+              </div>
             </div>
 
-            <!-- Team 2 chat log-->
-            <div  *ngIf="_participant.role=='team2'" style="overflow-y: auto; height:300px;max-width:500px;">
-              <ul>
-                <li *ngFor="let m of _team2Messages.slice().reverse()">
-                  <span [ngClass]="chatBubble(m.isSelf)">
-                    <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
-                  </span>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
 
       <!-- SPECTATOR page -->
       <div class="flex-container-centerh" *ngIf="_startupState=='spectator'">
-        <div class="flex-container-centerv">
-          <div class="flex-container-col">
+        <div class="flex-container-centerv" style="width:96%">
+          <div class="flex-container-col" style="text-align:center">
             <h2>SPECTATOR <i [ngClass]="roleClass(_participant?.role)"></i></h2>
           </div>
           <div>
@@ -184,32 +231,55 @@
               </tbody>
             </table>
           </div>
-          <div>
-            <!-- Chat Box -->
-            <div style="white-space:nowrap">
-              <input type="text" [(ngModel)]="_chat" (keydown)="messageKeyDown($event)" />
-              <a href="javascript:void(0)" class="send-btn" (click)="sendMessage_click()"><i class="fas fa-chevron-circle-right"></i></a>
-            </div>
-            <!-- Team 1 chat log-->
-            <div style="overflow-y: auto; height:300px;max-width:500px;">
-              <ul>
-                <li *ngFor="let m of _team1Messages.slice().reverse()">
-                  <span [ngClass]="chatBubble(m.isSelf)">
-                    <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
-                  </span>
-                </li>
-              </ul>
+          <div class="flex-container-centerh"  style="width:100%">
+            <!-- TEAM 1 CHAT -->
+            <div class="chatbox">
+              <h4 class="capitalize"><i class="fas fa-comments"></i> Team 1 </h4>
+              <!-- Team 1 chat log-->
+              <div id="team1-messages" class="chatbox-messages">
+                <ul>
+                  <li *ngFor="let m of _team1Messages.slice().reverse()">
+                    <span [ngClass]="chatBubble(m.isSelf)">
+                      <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
+                    </span>
+                  </li>
+                </ul>
+              </div>
             </div>
 
-            <!-- Team 2 chat log-->
-            <div style="overflow-y: auto; height:300px;max-width:500px;">
-              <ul>
-                <li *ngFor="let m of _team2Messages.slice().reverse()">
-                  <span [ngClass]="chatBubble(m.isSelf)">
-                    <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
-                  </span>
-                </li>
-              </ul>
+            <!-- SPECTATOR CHAT -->
+            <div class="chatbox">
+              <h4 class="capitalize"><i class="fas fa-comments"></i> Spectators </h4>
+              <!-- Spectators chat log-->
+              <div id="spectator-messages" class="chatbox-messages">
+                <ul>
+                  <li *ngFor="let m of _spectatorMessages.slice().reverse()">
+                    <span [ngClass]="chatBubble(m.isSelf)">
+                      <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <!-- Chat textbox -->
+              <div style="white-space:nowrap">
+                <input class="chatbox-input" type="text" [(ngModel)]="_chat" (keydown)="messageKeyDown($event)" />
+                <a href="javascript:void(0)" class="send-btn" (click)="sendMessage_click()"><i class="fas fa-chevron-circle-right"></i></a>
+              </div>
+            </div>
+
+            <!-- TEAM 2 CHAT -->
+            <div class="chatbox">
+              <h4 class="capitalize"><i class="fas fa-comments"></i> Team 2 </h4>
+              <!-- Team 2 chat log-->
+              <div id="team2-messages" class="chatbox-messages">
+                <ul>
+                  <li *ngFor="let m of _team2Messages.slice().reverse()">
+                    <span [ngClass]="chatBubble(m.isSelf)">
+                      <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
+                    </span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

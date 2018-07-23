@@ -4,7 +4,7 @@
 }
 
   .container > div {
-    width: 80%;
+    width: 85%;
   }
 
 .hero {
@@ -160,6 +160,7 @@
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 120px;
+  margin-top:10px;
 }
 
   .team td, .team th {
@@ -212,6 +213,33 @@
   background-color: rgba(142, 23, 23, 0.73);
 }
 
+.chatbox {
+  background-color: #214a5e;
+  margin:10px;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 500px;
+}
+.chatbox-messages {
+  overflow-y: auto;
+  height: 300px;
+  padding-right:8px;
+}
+.chatbox-input {
+  background-color: white;
+  color: #ff6a00;
+  border: none;
+  border-bottom: 2px solid #e7e304;
+  width:80%;
+  padding: 4px 4px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-size: large;
+  letter-spacing: 2px;
+  font-weight: 400;
+  font-family: 'Titillium Web', sans-serif;
+}
 
 .send-btn {
   color: white;

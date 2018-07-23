@@ -5,12 +5,14 @@ import * as signalR from '@aspnet/signalr';
 import { GameSession } from './models/gameSession';
 import { Participant } from './models/participant';
 import { ChatMessage } from './models/ChatMessage';
+import { QuestionService } from './services/question.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
   public _hubConnection: HubConnection | undefined;
   _startupState: string = "begin";
@@ -21,12 +23,14 @@ export class AppComponent implements OnInit {
   _chat: string;
   _team1Messages: ChatMessage[] = new Array<ChatMessage>();
   _team2Messages: ChatMessage[] = new Array<ChatMessage>();
+  _spectatorMessages: ChatMessage[] = new Array<ChatMessage>();
+  constructor(private _questionService: QuestionService) { }
 
   ngOnInit() {
 
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/api/gamehub')
-      .configureLogging(signalR.LogLevel.Information)
+      .withUrl('http://localhost:8000/api/gamehub')
+      .configureLogging(signalR.LogLevel.Debug)
       .build();
 
     this._hubConnection.on('Connected', (participant: Participant) => {
@@ -65,6 +69,7 @@ export class AppComponent implements OnInit {
       this.start_click();
     }
   }
+
   messageKeyDown(event) {
     if (event.keyCode == 13) {
       this.sendMessage_click();
@@ -104,6 +109,7 @@ export class AppComponent implements OnInit {
       this._hubConnection.invoke('QuitRole', this._participant);
     }
   }
+
   public sendMessage_click() {
     if (this._chat.length < 1) { return;}
     if (this._hubConnection) {
@@ -113,7 +119,13 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // Class Togglers
+  public getRandomQuestion_click() {
+    this._questionService.getRandomQuestion().subscribe(question => {
+
+    })
+  }
+
+  // ngClass Togglers
   isDisabledBtn(state: boolean) {
     if (state) {
       return 'btn-disabled';
@@ -153,6 +165,11 @@ export class AppComponent implements OnInit {
     } else if (team == "team2") {
       this._team2Messages.push(chat);
       while (this._team2Messages.length > 20) {
+        this._team2Messages.shift();
+      }
+    } else if (team == "spectator") {
+      this._spectatorMessages.push(chat);
+      while (this._spectatorMessages.length > 20) {
         this._team2Messages.shift();
       }
     }
