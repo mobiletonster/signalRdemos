@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:8000/api/gamehub')
+      .withUrl('/api/gamehub')
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
