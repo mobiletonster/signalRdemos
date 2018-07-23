@@ -14,17 +14,19 @@
 
 .main {
   width: 100%;
-  height: calc(90vh - 200px);
+  min-height: calc(90vh);
   padding: 20px 0px;
   background-color: #34728f;
   border-radius: 8px;
 }
 
+.top-space {
+  margin-top:80px;
+}
 
 .logo {
   color: #ff6a00;
 }
-
 
   .title {
     font-family: 'Luckiest Guy', cursive;
@@ -49,6 +51,17 @@
     color: #81db1d;
     text-shadow: 5px 5px 5px #214a5e;
     text-align: center;
+    margin-top:-50px;
+  }
+
+  .logged-in {
+    font-family: 'Luckiest Guy', Woodcut;
+    font-size:18px;
+    color:white;
+    text-shadow: 3px 3px 3px #214a5e;
+    text-align: right;
+    padding-right:10px;
+    float:right;
   }
 
 
@@ -72,17 +85,17 @@
 
 .btn > .badge , .btn-disabled > .badge {
   padding: 4px;
-  background-color: #177017;
+  background-color: #e02e1c;
   border-radius: 40px;
   color: white;
   font-size: 16px;
-  height: 20px;
-  width: 20px;
+  height: 18px;
+  width: 18px;
   float:right;
 }
 
 .btn-disabled > .badge {
-  background-color:#8f2415;
+  background-color: #214a5e;
 }
 
 .btn-large {

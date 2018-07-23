@@ -11,28 +11,56 @@ namespace BrainBuffet
     public class GameHub:Hub
     {
         public static GameSession _gameSession= new GameSession();
-        public GameHub()
+        public GameHub(){}
+
+        #region SignalR Events
+        public override async Task OnConnectedAsync()
         {
-            // _gameSession = new GameSession();
+            await base.OnConnectedAsync();
+            var participant = new Participant(Context.ConnectionId);
+            await Clients.Caller.SendAsync("Connected", participant);
+            await Clients.Caller.SendAsync("GameState", _gameSession);
         }
-        public Task Send(string data)
+    
+        public async override Task OnDisconnectedAsync(Exception exception)
         {
-            return Clients.All.SendAsync("Send", data);
+            Leave(Context.ConnectionId);
+            await Clients.All.SendAsync("GameState", _gameSession);
+            await base.OnDisconnectedAsync(exception);
+        }
+        #endregion
+
+        #region SignalR Client Invokable Endpoints
+        // client invokable endpoints
+        public async Task Join(string role,Participant participant)
+        {
+            if(JoinRole(role, participant))
+            {
+                // if successful, set the user's role and send back.
+                participant.Role = role;
+            }
+            await Clients.All.SendAsync("GameState", _gameSession);
+            await Clients.Caller.SendAsync("Joined", participant);
         }
 
-        public async Task Join(string role,string player)
+        public async Task QuitRole(Participant participant)
         {
-            var participant = new Participant(Context.ConnectionId, player);
-            JoinRole(role, participant);
-            await Clients.All.SendAsync("Joined", _gameSession);
+            Leave(participant.ConnectionId);
+            await Clients.All.SendAsync("GameState", _gameSession);
+            participant.Role = null;
+            participant.Name = null;
+            await Clients.Caller.SendAsync("Left", participant);
         }
+        #endregion
 
-        public bool JoinRole(string role ,Participant participant)
+        #region Private Methods
+        private bool JoinRole(string role, Participant participant)
         {
             if (role == "host")
             {
                 if (_gameSession.Host == null)
                 {
+                    // participant.Role = role;
                     _gameSession.Host = participant;
                     return true;
                 }
@@ -41,11 +69,12 @@ namespace BrainBuffet
             if (role == "team1")
             {
                 return _gameSession.Team1.Add(participant);
-            } else if (role == "team2")
+            }
+            else if (role == "team2")
             {
                 return _gameSession.Team2.Add(participant);
             }
-            else if(role=="spectator")
+            else if (role == "spectator")
             {
                 _gameSession.Spectators.Add(participant);
                 return true;
@@ -53,31 +82,16 @@ namespace BrainBuffet
             return false;
         }
 
-        public void Leave(string connectionId)
+        private void Leave(string connectionId)
         {
-            if (_gameSession.Host.ConnectionId == connectionId)
+            if (_gameSession.Host?.ConnectionId == connectionId)
             {
                 _gameSession.Host = null;
             }
-            _gameSession.Team1.Members.RemoveAll(m=>m.ConnectionId==connectionId);
+            _gameSession.Team1.Members.RemoveAll(m => m.ConnectionId == connectionId);
             _gameSession.Team2.Members.RemoveAll(m => m.ConnectionId == connectionId);
             _gameSession.Spectators.RemoveAll(m => m.ConnectionId == connectionId);
         }
-
-        public override async Task OnConnectedAsync()
-        {
-            await base.OnConnectedAsync();
-            await Clients.All.SendAsync("Joined", _gameSession);
-        }
-
-        public async override Task OnDisconnectedAsync(Exception exception)
-        {
-            Leave(Context.ConnectionId);
-            await Clients.All.SendAsync("Joined", _gameSession);
-
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "SignalR Users");
-            await Clients.All.SendAsync("Connected", Context.ConnectionId + " Left");
-            await base.OnDisconnectedAsync(exception);
-        }
+        #endregion
     }
 }

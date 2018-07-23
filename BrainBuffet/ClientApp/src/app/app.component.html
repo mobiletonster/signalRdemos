@@ -1,66 +1,100 @@
 <div class="container">
   <div id="contain-non-fluid">
+    <!-- HERO -->
     <div class="hero">
       <h1 class="title strokeme"> Brain <i class="fab fa-envira logo"></i> Buffet! </h1>
-      <h2 class="subtitle">The game for brainiacs</h2>
+      <h2 *ngIf="!_participant?.name" class="subtitle">The game for brainiacs</h2>
     </div>
+    <!-- User Connected Menu -->
+    <div class="dropdown pull-right" *ngIf="_participant?.name">
+      <button class="dropbtn">
+        <span class="logged-in">
+          <i class="fas fa-user-circle"></i> {{_participant?.name}} -
+          <i [ngClass]="roleClass(_participant?.role)"></i>
+        </span>
+      </button>
+      <div class="dropdown-content">
+        <a href="javascript:void(0);" (click)="quitRole_click()"><i class="fas fa-window-close"></i> Quit Role</a>
+      </div>
+    </div>
+
     <div class="main">
-
-      <div class="flex-container-centerh" *ngIf="startupState=='begin'">
+      <!-- BEGIN enter name and connect-->
+      <div class="flex-container-centerh top-space" *ngIf="_startupState=='begin'">
         <div class="flex-container-centerv">
-          <div class="flex-container-col">
-            <div *ngIf="!loading"><input type="text" [(ngModel)]="player"  placeholder="Your Name Here" (keydown)="keyDown($event)" /></div>
-            <h2 class="btn-large" *ngIf="!loading" (click)="start()">START</h2>
-            <div *ngIf="loading" class="player-name">{{player}}</div>
-            <h4 style="text-align:center" *ngIf="loading">Stand by while we teleport into your brain!</h4>
-            <div *ngIf="loading" class="loader">Loading...</div>
+          <div *ngIf="!_loading" class="flex-container-col">
+            <div><input type="text" [(ngModel)]="_playerName" placeholder="Your Name Here" (keydown)="keyDown($event)" /></div>
+            <h2 class="btn-large" (click)="start_click()">START</h2>
           </div>
-          
-
+          <div *ngIf="_loading" class="flex-container-col">
+            <div class="player-name">{{_playerName}}</div>
+            <h4 style="text-align:center">Stand by while we teleport into your brain!</h4>
+            <div class="loader">Loading...</div>
+          </div>
         </div>
-
       </div>
 
-      <div class="flex-container-centerh" *ngIf="startupState=='chooser'">
+      <!-- CHOOSE a role -->
+      <div class="flex-container-centerh  top-space" *ngIf="_startupState=='chooser'">
         <div class="flex-container-centerv">
           <div class="flex-container-col">
             <div>
+              <div class="player-name">{{_playerName}}
+              </div>
               <h3 style="text-align:center;">
                 Choose your role.
               </h3>
             </div>
             <div>
-              <h4 *ngIf="!_gameSession.host" class="btn" (click)="choose('host')">
+              <h4 *ngIf="!_gameSession.host" class="btn" (click)="join_click('host')">
                 <i class="fas fa-microphone-alt"></i> Host <span class="badge">1</span>
               </h4>
               <h4 *ngIf="_gameSession.host" class="btn-disabled">
                 <i class="fas fa-microphone-alt"></i> {{_gameSession?.host?.name}}
               </h4>
-
-              <h4 [ngClass]="isDisabledBtn(_gameSession?.team1?.isFull)" (click)="choose('team1')">
+              <h4 [ngClass]="isDisabledBtn(_gameSession?.team1?.isFull)" (click)="join_click('team1')">
                 <i class="fab fa-rebel"></i> Team 1 <span class="badge">{{_gameSession?.team1?.available}}</span>
               </h4>
-              <h4 [ngClass]="isDisabledBtn(_gameSession?.team2?.isFull)"  (click)="choose('team2')">
+              <h4 [ngClass]="isDisabledBtn(_gameSession?.team2?.isFull)" (click)="join_click('team2')">
                 <i class="fab fa-empire"></i> Team 2  <span class="badge">{{_gameSession?.team2?.available}}</span>
               </h4>
-              <h4 class="btn" (click)="choose('spectator')">
+              <h4 class="btn" (click)="join_click('spectator')">
                 <i class="fas fa-users"></i> Spectator <span class="badge">{{_gameSession?.spectators?.length}}</span>
               </h4>
-
             </div>
-            <div>
-              <table>
-                <tr *ngFor="let m of messages" ><td>{{m}}</td></tr>
-              </table>
-            </div>
-
-
           </div>
+        </div>
       </div>
 
+      <!-- HOST Page -->
+      <div class="flex-container-centerh" *ngIf="_startupState=='host'">
+        <div class="flex-container-centerv">
+          <div class="flex-container-col">
+            <h2>HOST <i [ngClass]="roleClass(_participant?.role)"></i></h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEAM page -->
+      <div class="flex-container-centerh" *ngIf="_startupState=='team'">
+        <div class="flex-container-centerv">
+          <div class="flex-container-col">
+            <h2>{{_participant?.role}} <i [ngClass]="roleClass(_participant?.role)"></i></h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPECTATOR page -->
+      <div class="flex-container-centerh" *ngIf="_startupState=='spectator'">
+        <div class="flex-container-centerv">
+          <div class="flex-container-col">
+            <h2>SPECTATOR <i [ngClass]="roleClass(_participant?.role)"></i></h2>
+          </div>
+        </div>
       </div>
 
 
+      <!-- ROUTER outlet -->
       <router-outlet></router-outlet>
     </div>
 

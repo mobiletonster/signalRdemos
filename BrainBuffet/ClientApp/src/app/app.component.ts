@@ -11,15 +11,12 @@ import { Participant } from './models/participant';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Brain Buffet';
-  public _hubConnection: HubConnection | undefined;s
+  public _hubConnection: HubConnection | undefined;
+  _startupState: string = "begin";
+  _participant: Participant;
   _gameSession: GameSession = new GameSession();
-  startupState: string = "begin";
-  loading: boolean = false;
-  player: string;
-
-  hasHost: boolean = false;
-
+  _loading: boolean = false;
+  _playerName: string;
 
   ngOnInit() {
     this._hubConnection = new signalR.HubConnectionBuilder()
@@ -27,70 +24,70 @@ export class AppComponent implements OnInit {
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
+    this._hubConnection.on('Connected', (participant: Participant) => {
+      // on connected, get initial state of participant (with connection id only)
+      this._participant = participant;
+    });
 
+    this._hubConnection.on('Joined', (participant: Participant) => {
+      // on join, get updated participant with assigned role.
+      this._participant = participant;
+      if (participant.role == "team1" || participant.role == "team2") {
+        this._startupState = "team";
+      } else {
+        this._startupState = participant.role;
+      }
+    });
 
-    this._hubConnection.on('Joined', (gameSession: GameSession) => {
-      // on join, get the game session state.
-      this._gameSession = gameSession;
+    this._hubConnection.on('Left', (participant: Participant) => {
+      // on leave, reset the user back to a state where they can rejoin.
+      this._participant = participant;
+      this._startupState="chooser"
     })
 
-    //this._hubConnection.on('Connected', (gameSession: GameSession) => {
-    //  //this.checkGameSessionState(gameSession);
-    //  console.log(gameSession);
-    //  this._gameSession = gameSession;
-    //})
-  }
-
-  checkGameSessionState(gameSession: GameSession) {
-    if (gameSession.host) {
+    this._hubConnection.on('GameState', (gameSession: GameSession) => {
       this._gameSession = gameSession;
-      console.log("we have a host.");
-    }
-    if (gameSession.team1.isFull) {
-      console.log("team 1 is full");
-    }
-    if (gameSession.team2.isFull) {
-      console.log("team 2 is full");
-    }
+    });
   }
 
-
-
-  public join(role: string): void {
-    if (this._hubConnection) {
-      this._hubConnection.invoke('Join', role, this.player);
-    }
-  }
-
+  // enter key pressed in name field
   keyDown(event) {
     if (event.keyCode == 13) {
-      this.start();
+      this.start_click();
     }
   }
 
-  start() {
-    if (this.player==undefined || this.player.length < 2) {
+  // start button pressed.
+  start_click() {
+    if (this._playerName == undefined || this._playerName.length < 2) {
       alert('Please enter your name!')
       return;
     }
-    this.loading = true;
+    this._loading = true;
 
-    // wait a while so we can see the cool loading animation.
-
-      this._hubConnection.start()
-        .then(() => {
-          setTimeout(() => {
-            this.startupState = "chooser";
-            this.loading = false;
-          }, 2000);
-      }).catch(err => {
-        console.error(err.toString());
-        this.loading = false;
-      });
+    this._hubConnection.start()
+      .then(() => {
+        setTimeout(() => {
+          this._startupState = "chooser";
+          this._loading = false;
+        }, 200);     // wait a while so we can see the cool loading animation.
+    }).catch(err => {
+      console.error(err.toString());
+      this._loading = false;
+    });
   }
 
-  choose(role: string) {
-    this.join(role);
+  public join_click(role: string): void {
+    if (this._hubConnection) {
+      this._participant.name = this._playerName;
+      this._hubConnection.invoke('Join', role, this._participant);
+    }
+  }
+
+  public quitRole_click() {
+    if (this._hubConnection) {
+      this._hubConnection.invoke('QuitRole', this._participant);
+    }
   }
 
   isDisabledBtn(state: boolean) {
@@ -98,6 +95,19 @@ export class AppComponent implements OnInit {
       return 'btn-disabled';
     } else {
       return 'btn';
+    }
+  }
+
+  roleClass(state: string) {
+    switch (state) {
+      case 'host':
+        return "fas fa-microphone-alt";
+      case 'team1':
+        return "fab fa-rebel";
+      case 'team2':
+        return "fab fa-empire";
+      case 'spectator':
+        return "fas fa-users";
     }
   }
 }
