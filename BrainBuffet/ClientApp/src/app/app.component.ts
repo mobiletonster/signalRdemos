@@ -4,6 +4,7 @@ import { HubConnection } from '@aspnet/signalr';
 import * as signalR from '@aspnet/signalr';
 import { GameSession } from './models/gameSession';
 import { Participant } from './models/participant';
+import { ChatMessage } from './models/ChatMessage';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +18,13 @@ export class AppComponent implements OnInit {
   _gameSession: GameSession = new GameSession();
   _loading: boolean = false;
   _playerName: string;
+  _chat: string;
+  _messages: ChatMessage[] = new Array<ChatMessage>();
 
   ngOnInit() {
 
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/api/gamehub')
+      .withUrl('http://localhost:8000/api/gamehub')
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
@@ -49,6 +52,10 @@ export class AppComponent implements OnInit {
     this._hubConnection.on('GameState', (gameSession: GameSession) => {
       this._gameSession = gameSession;
     });
+
+    this._hubConnection.on('Message', (name: string, message: string) => {
+      this.addChatMessage(new ChatMessage(name, message, false));
+    })
   }
 
   // enter key pressed in name field
@@ -57,8 +64,14 @@ export class AppComponent implements OnInit {
       this.start_click();
     }
   }
+  messageKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.sendMessage_click();
+    }
+  }
 
   // Click Events
+
   public start_click() {
     if (this._playerName == undefined || this._playerName.length < 2) {
       alert('Please enter your name!')
@@ -90,6 +103,14 @@ export class AppComponent implements OnInit {
       this._hubConnection.invoke('QuitRole', this._participant);
     }
   }
+  public sendMessage_click() {
+    if (this._chat.length < 1) { return;}
+    if (this._hubConnection) {
+      this.addChatMessage(new ChatMessage(this._participant.name, this._chat, true));
+      this._hubConnection.invoke('Chat', this._participant, this._chat);
+      this._chat = "";
+    }
+  }
 
   // Class Togglers
   isDisabledBtn(state: boolean) {
@@ -110,6 +131,22 @@ export class AppComponent implements OnInit {
         return "fab fa-empire";
       case 'spectator':
         return "fas fa-users";
+    }
+  }
+
+  chatBubble(isSelf: boolean) {
+    if (isSelf) {
+      return 'speech-bubble-self';
+    } else {
+      return 'speech-bubble-other';
+    }
+  }
+
+  // private methods
+  addChatMessage(chat: ChatMessage) {
+    this._messages.push(chat);
+    while (this._messages.length > 20) {
+      this._messages.shift();
     }
   }
 }

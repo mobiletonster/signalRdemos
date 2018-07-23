@@ -211,3 +211,37 @@
 #team2 th {
   background-color: rgba(142, 23, 23, 0.73);
 }
+
+
+.send-btn {
+  color: white;
+  margin: 10px;
+  vertical-align: middle;
+  font-size: 38px;
+}
+.send-btn:hover{
+  color:#ffd800;
+}
+.send-btn:active{
+  color:rgba(255, 216, 0, 0.55);
+}
+
+.speech-bubble-self {
+  clear: both;
+  float: left;
+  background: #67b015;
+  color: #e0e0e0;
+  margin: 2px;
+  padding: 8px;
+  border-radius: .4em;
+}
+
+.speech-bubble-other {
+  clear:both;
+  float: right;
+  background: #b7b7b7;
+  color:black;
+  margin:2px;
+  padding:8px;
+  border-radius: .4em;
+}

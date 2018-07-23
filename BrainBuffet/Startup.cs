@@ -16,10 +16,12 @@ namespace BrainBuffet
         public void ConfigureServices(IServiceCollection services)
         {
             // In production, the Angular files will be served from this directory
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
             services.AddMvc();
 
             services.AddSignalR();
@@ -47,14 +49,14 @@ namespace BrainBuffet
                 routes.MapHub<GameHub>("/api/gamehub");
             });
             app.UseMvc();
+
             app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+                {
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                    // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "ClientApp";
-            });
-
+                    spa.Options.SourcePath = "ClientApp";
+                });
         }
     }
 }

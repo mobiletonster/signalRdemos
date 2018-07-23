@@ -39,6 +39,9 @@ namespace BrainBuffet
             {
                 // if successful, set the user's role and send back.
                 participant.Role = role;
+                // add them to their group so they can chat privately within that group
+                // host is a lonely group of one.
+                await Groups.AddToGroupAsync(participant.ConnectionId, role);
             }
             await Clients.All.SendAsync("GameState", _gameSession);
             await Clients.Caller.SendAsync("Joined", participant);
@@ -46,11 +49,16 @@ namespace BrainBuffet
 
         public async Task QuitRole(Participant participant)
         {
+            await Groups.RemoveFromGroupAsync(participant.ConnectionId, participant.Role);
             Leave(participant.ConnectionId);
             await Clients.All.SendAsync("GameState", _gameSession);
             participant.Role = null;
             participant.Name = null;
             await Clients.Caller.SendAsync("Left", participant);
+        }
+        public async Task Chat(Participant participant, string message)
+        {
+            await Clients.OthersInGroup(participant.Role).SendAsync("Message",participant.Name, message);
         }
         #endregion
 
@@ -69,6 +77,7 @@ namespace BrainBuffet
             }
             if (role == "team1")
             {
+
                 return _gameSession.Team1.Add(participant);
             }
             else if (role == "team2")
@@ -92,6 +101,20 @@ namespace BrainBuffet
             _gameSession.Team1.Members.RemoveAll(m => m.ConnectionId == connectionId);
             _gameSession.Team2.Members.RemoveAll(m => m.ConnectionId == connectionId);
             _gameSession.Spectators.RemoveAll(m => m.ConnectionId == connectionId);
+        }
+
+        public async Task AddToGroup(string groupName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+            await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has joined the group {groupName}.");
+        }
+
+        public async Task RemoveFromGroup(string groupName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+
+            await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has left the group {groupName}.");
         }
         #endregion
     }

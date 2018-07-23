@@ -115,6 +115,21 @@
             </table>
 
           </div>
+          <div>
+            <div style="white-space:nowrap">
+              <input type="text" [(ngModel)]="_chat" (keydown)="messageKeyDown($event)" />
+              <a href="javascript:void(0)" class="send-btn" (click)="sendMessage_click()"><i class="fas fa-chevron-circle-right"></i></a>
+            </div>
+            <div style="overflow-y: auto; height:300px;max-width:500px;">
+              <ul>
+                <li *ngFor="let m of _messages.slice().reverse()">
+                  <span [ngClass]="chatBubble(m.isSelf)">
+                    <strong *ngIf="!m.isSelf">{{m.name}}:</strong> {{m.message}}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
 
