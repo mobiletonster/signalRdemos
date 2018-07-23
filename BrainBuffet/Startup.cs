@@ -56,7 +56,6 @@ namespace BrainBuffet
                     // see https://go.microsoft.com/fwlink/?linkid=864501
 
                     spa.Options.SourcePath = "ClientApp";
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 });
         }
     }

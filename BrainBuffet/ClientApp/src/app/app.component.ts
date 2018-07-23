@@ -24,12 +24,13 @@ export class AppComponent implements OnInit {
   _team1Messages: ChatMessage[] = new Array<ChatMessage>();
   _team2Messages: ChatMessage[] = new Array<ChatMessage>();
   _spectatorMessages: ChatMessage[] = new Array<ChatMessage>();
+
   constructor(private _questionService: QuestionService) { }
 
   ngOnInit() {
 
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:8000/api/gamehub')
+      .withUrl('/api/gamehub')
       .configureLogging(signalR.LogLevel.Debug)
       .build();
 

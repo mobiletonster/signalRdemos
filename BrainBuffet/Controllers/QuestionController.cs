@@ -10,6 +10,15 @@ namespace BrainBuffet.Controllers
 {
     public class QuestionController: Controller
     {
+        private static readonly Random getrandom = new Random();
+
+        public static int GetRandomNumber(int min, int max)
+        {
+            lock (getrandom) // synchronize
+            {
+                return getrandom.Next(min, max);
+            }
+        }
         private List<Question> _questions;
 
         public QuestionController()
@@ -21,8 +30,7 @@ namespace BrainBuffet.Controllers
         public IActionResult GetRandomQuestion()
         {
             var count = _questions.Count();
-            var rnd = new Random();
-            int next = rnd.Next(1, count + 1);
+            int next = GetRandomNumber(1, count + 1);
             var question = _questions.Where(m => m.Id == next);
             return Ok(question);
         }
