@@ -56,9 +56,14 @@ namespace BrainBuffet
             participant.Name = null;
             await Clients.Caller.SendAsync("Left", participant);
         }
-        public async Task Chat(Participant participant, string message)
+        public async Task TeamChat(Participant participant, string message)
         {
-            await Clients.OthersInGroup(participant.Role).SendAsync("Message",participant.Name, message);
+            await Clients.OthersInGroup(participant.Role).SendAsync("TeamMessage",participant.Role,participant.Name, message);
+            if (participant.Role != "spectator")
+            {
+                // let spectators listen in on team1 and team2 chats.
+                await Clients.Group("spectator").SendAsync("TeamMessage", participant.Role, participant.Name, message);
+            }
         }
         #endregion
 

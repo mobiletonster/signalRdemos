@@ -19,7 +19,8 @@ export class AppComponent implements OnInit {
   _loading: boolean = false;
   _playerName: string;
   _chat: string;
-  _messages: ChatMessage[] = new Array<ChatMessage>();
+  _team1Messages: ChatMessage[] = new Array<ChatMessage>();
+  _team2Messages: ChatMessage[] = new Array<ChatMessage>();
 
   ngOnInit() {
 
@@ -53,8 +54,8 @@ export class AppComponent implements OnInit {
       this._gameSession = gameSession;
     });
 
-    this._hubConnection.on('Message', (name: string, message: string) => {
-      this.addChatMessage(new ChatMessage(name, message, false));
+    this._hubConnection.on('TeamMessage', (team:string, name: string, message: string) => {
+      this.addChatMessage(team, new ChatMessage(name, message, false));
     })
   }
 
@@ -106,8 +107,8 @@ export class AppComponent implements OnInit {
   public sendMessage_click() {
     if (this._chat.length < 1) { return;}
     if (this._hubConnection) {
-      this.addChatMessage(new ChatMessage(this._participant.name, this._chat, true));
-      this._hubConnection.invoke('Chat', this._participant, this._chat);
+      this.addChatMessage(this._participant.role,new ChatMessage(this._participant.name, this._chat, true));
+      this._hubConnection.invoke('TeamChat', this._participant, this._chat);
       this._chat = "";
     }
   }
@@ -143,10 +144,17 @@ export class AppComponent implements OnInit {
   }
 
   // private methods
-  addChatMessage(chat: ChatMessage) {
-    this._messages.push(chat);
-    while (this._messages.length > 20) {
-      this._messages.shift();
+  addChatMessage(team: string, chat: ChatMessage) {
+    if (team == "team1") {
+      this._team1Messages.push(chat);
+      while (this._team1Messages.length > 20) {
+        this._team1Messages.shift();
+      }
+    } else if (team == "team2") {
+      this._team2Messages.push(chat);
+      while (this._team2Messages.length > 20) {
+        this._team2Messages.shift();
+      }
     }
   }
 }

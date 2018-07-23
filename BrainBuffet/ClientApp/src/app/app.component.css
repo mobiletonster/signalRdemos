@@ -228,7 +228,7 @@
 
 .speech-bubble-self {
   clear: both;
-  float: left;
+  float: right;
   background: #67b015;
   color: #e0e0e0;
   margin: 2px;
@@ -238,7 +238,7 @@
 
 .speech-bubble-other {
   clear:both;
-  float: right;
+  float: left;
   background: #b7b7b7;
   color:black;
   margin:2px;
