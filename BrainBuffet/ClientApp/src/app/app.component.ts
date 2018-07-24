@@ -75,8 +75,6 @@ export class AppComponent implements OnInit {
       this._question = question;
       this._guess = null;
       this._guessed = false;
-      this._gameSession.team1Guess = null;
-      this._gameSession.team2Guess = null;
     })
 
     this._hubConnection.on('GuessSent', (team: string, guess: string) => {
@@ -87,10 +85,8 @@ export class AppComponent implements OnInit {
       }
     })
 
-    this._hubConnection.on('AnswerRevealed', (question: Question, gameSession: GameSession) => {
+    this._hubConnection.on('AnswerRevealed', (question: Question) => {
       this._question.answerText = question.answerText;
-      this._gameSession.team1Guess = gameSession.team1Guess;
-      this._gameSession.team2Guess = gameSession.team2Guess;
       this._question.reveal = true;
     })
 

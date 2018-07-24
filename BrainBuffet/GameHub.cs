@@ -66,7 +66,10 @@ namespace BrainBuffet
             }
         }
         public async Task PushQuestion(Question question)
-        { 
+        {
+            _gameSession.Team1Guess = null;
+            _gameSession.Team2Guess = null;
+            await Clients.All.SendAsync("GameState", _gameSession);
             await Clients.Groups("spectator","team1","team2").SendAsync("LoadQuestion", question);
         }
         public async Task GuessAnswer(Participant participant, string answer)
@@ -82,7 +85,8 @@ namespace BrainBuffet
         }
         public async Task RevealAnswer(Question question)
         {
-            await Clients.Groups("spectator", "team1", "team2").SendAsync("AnswerRevealed", question, _gameSession);
+            await Clients.All.SendAsync("GameState", _gameSession);
+            await Clients.Groups("spectator", "team1", "team2").SendAsync("AnswerRevealed", question);
         }
         #endregion
 
