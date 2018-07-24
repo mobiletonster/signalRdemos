@@ -109,7 +109,11 @@ strong{
 em{
   font-style:italic;
 }
-
+label{
+  font-weight:800;
+  font-size:20px;
+  color:white;
+}
 .capitalize {
   text-transform:capitalize;
 }

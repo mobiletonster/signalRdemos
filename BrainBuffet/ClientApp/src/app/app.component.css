@@ -165,6 +165,31 @@
   color: #214a5e;
 }
 
+.btn-small {
+  margin: 10px;
+  padding: 6px 12px;
+  background-color: #ffd800;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  color: #000000;
+}
+.btn-small:hover {
+  cursor: pointer;
+  color: #ff6a00;
+  background-color: rgba(255, 216, 0, 0.80);
+}
+
+  .btn-small:hover > a {
+    color: #ff6a00;
+  }
+
+.btn-small:active {
+  background-color: rgba(255, 216, 0, 0.55)
+}
+
+
+
 .team {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -303,10 +328,10 @@
   .answer-text {
     font-family: 'Cabin', sans-serif;
     font-weight: 600;
-    font-size: 28px;
+    font-size: 22px;
     padding: 8px;
     color: #81db1d;
-    text-shadow: 4px 4px 4px #000000;
+    text-shadow: 3px 3px 7px #000000;
     text-align: center;
     letter-spacing: 2px;
     max-width: 200px;
@@ -318,8 +343,55 @@
     padding: 10px;
   }
 
+.answer-box {
+  background-color: white;
+  color: #ff6a00;
+  border: none;
+  border-bottom: 2px solid #e7e304;
+  width: 80%;
+  padding: 4px 4px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-size: large;
+  letter-spacing: 2px;
+  font-weight: 400;
+  font-family: 'Titillium Web', sans-serif;
+}
+
 @media screen and (min-width:500px) {
   .game-image, .game-text, .answer-text {
     max-width: 400px;
   }
+}
+
+.team1-guess {
+  background-color:#214a5e;
+  border-radius:5px;
+  clear:both;
+  float:left;
+  font-family: 'Cabin', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  padding: 8px;
+  color: #81db1d;
+  text-shadow: 3px 3px 7px #000000;
+  text-align: center;
+  letter-spacing: 2px;
+  max-width: 45%;
+}
+
+.team2-guess {
+  background-color: #214a5e;
+  border-radius: 5px;
+  float:right;
+  font-family: 'Cabin', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  padding: 8px;
+  color: #81db1d;
+  text-shadow: 3px 3px 7px #000000;
+  text-align: center;
+  letter-spacing: 2px;
+  max-width: 45%;
 }

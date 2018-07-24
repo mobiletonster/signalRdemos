@@ -26,13 +26,15 @@ export class AppComponent implements OnInit {
   _team2Messages: ChatMessage[] = new Array<ChatMessage>();
   _spectatorMessages: ChatMessage[] = new Array<ChatMessage>();
   _question: Question;
+  _guess: string;
+  _guessed: boolean;
 
   constructor(private _questionService: QuestionService) { }
 
   ngOnInit() {
 
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:8000/api/gamehub')
+      .withUrl('/api/gamehub')
       .configureLogging(signalR.LogLevel.Debug)
       .build();
 
@@ -56,9 +58,9 @@ export class AppComponent implements OnInit {
       this._participant = participant;
       this._startupState = "chooser"
       this._question = null;
-      this._spectatorMessages = null;
-      this._team1Messages = null;
-      this._team2Messages = null;
+      this._spectatorMessages = new Array<ChatMessage>();
+      this._team1Messages = new Array<ChatMessage>();
+      this._team2Messages = new Array<ChatMessage>();
     })
 
     this._hubConnection.on('GameState', (gameSession: GameSession) => {
@@ -71,8 +73,27 @@ export class AppComponent implements OnInit {
 
     this._hubConnection.on('LoadQuestion', (question: Question) => {
       this._question = question;
-      console.log(question);
+      this._guess = null;
+      this._guessed = false;
+      this._gameSession.team1Guess = null;
+      this._gameSession.team2Guess = null;
     })
+
+    this._hubConnection.on('GuessSent', (team: string, guess: string) => {
+      if (team == "team1") {
+        this._gameSession.team1Guess = guess;
+      } else if (team == "team2") {
+        this._gameSession.team2Guess = guess;
+      }
+    })
+
+    this._hubConnection.on('AnswerRevealed', (question: Question, gameSession: GameSession) => {
+      this._question.answerText = question.answerText;
+      this._gameSession.team1Guess = gameSession.team1Guess;
+      this._gameSession.team2Guess = gameSession.team2Guess;
+      this._question.reveal = true;
+    })
+
   }
 
   // enter key pressed in name field
@@ -88,8 +109,13 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // Click Events
+  guessKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.sendGuess_click();
+    }
+  }
 
+  // Click Events
   public start_click() {
     if (this._playerName == undefined || this._playerName.length < 2) {
       alert('Please enter your name!')
@@ -135,7 +161,8 @@ export class AppComponent implements OnInit {
     this._question = null;
     this._questionService.getRandomQuestion().subscribe(question => {
       this._question = question;
-      console.log(question);
+      this._gameSession.team1Guess = null;
+      this._gameSession.team2Guess = null;
     })
   }
 
@@ -148,6 +175,19 @@ export class AppComponent implements OnInit {
     if (this._hubConnection) {
       this._hubConnection.invoke('PushQuestion', pushQuestion);
       this._question.pushed = true;
+    }
+  }
+
+  public sendGuess_click() {
+    if (this._hubConnection) {
+      this._hubConnection.invoke('GuessAnswer', this._participant, this._guess);
+      this._guessed = true;
+    }
+  }
+
+  public reveal_click() {
+    if (this._hubConnection) {
+      this._hubConnection.invoke('RevealAnswer', this._question);
     }
   }
 
@@ -199,6 +239,15 @@ export class AppComponent implements OnInit {
         this._team2Messages.shift();
       }
     }
+  }
+
+  isCaptain() {
+    if (this._participant.role == "team1") {
+      return (this._gameSession.team1.members[0].connectionId == this._participant.connectionId);
+    } else if (this._participant.role == "team2") {
+      return (this._gameSession.team2.members[0].connectionId == this._participant.connectionId);
+    }
+    return false;
   }
 }
 

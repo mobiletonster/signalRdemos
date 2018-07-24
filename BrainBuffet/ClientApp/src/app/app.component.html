@@ -89,6 +89,7 @@
                 </tr>
               </tbody>
             </table>
+
             <div>
               <div class="btn" style="width:150px;" href="javascript:void(0)" (click)="getRandomQuestion_click()">Next Question</div>
             </div>
@@ -107,15 +108,25 @@
                 </tr>
               </tbody>
             </table>
+
+          </div>
+          <!-- TEAM GUESSES -->
+          <div class="flex-container-justifyh top-space-half">
+            <div class="team1-guess">
+              {{_gameSession.team1Guess}}
+            </div>
+            <div class="team2-guess">
+              {{_gameSession.team2Guess}}
+            </div>
           </div>
           <!-- GAME AREA -->
-          <div class="flex-container-centerh top-space-half" style="width:100%">           
+          <div class="flex-container-centerh top-space-half" style="width:100%">
             <div class="flex-container-col">
               <div class="game-container" *ngIf="_question">
                 <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
                 <p class="game-text">{{_question?.questionText}}</p>
                 <div class="btn" *ngIf="!_question?.pushed" (click)="push_click(_question)">Push to contestants</div>
-                <div class="btn" *ngIf="!_question?.reveal" (click)="_question.reveal=true">Reveal answer</div>
+                <div class="btn" *ngIf="!_question?.reveal" (click)="reveal_click()">Reveal answer</div>
                 <div class="answer-text" *ngIf="_question?.reveal">
                   {{_question?.answerText}}
                 </div>
@@ -163,7 +174,15 @@
                 </tr>
               </tbody>
             </table>
-
+          </div>
+          <!-- TEAM GUESSES -->
+          <div class="flex-container-justifyh top-space-half" *ngIf="_question?.reveal">
+            <div class="team1-guess">
+              {{_gameSession.team1Guess}}
+            </div>
+            <div class="team2-guess">
+              {{_gameSession.team2Guess}}
+            </div>
           </div>
           <!-- GAME AREA -->
           <div class="flex-container-centerh top-space-half" style="width:100%">
@@ -175,8 +194,19 @@
                   {{_question?.answerText}}
                 </div>
               </div>
+
+              <!-- GUESS BOX FOR CAPTAIN -->
+              <div style="margin-top:10px;" *ngIf="isCaptain() && _question">
+                <label>You, as team captain, submits guess:</label>
+                <div *ngIf="!_guessed" style="white-space:nowrap">
+                  <input class="answer-box" [(ngModel)]="_guess" (keydown)="guessKeyDown($event)" />
+                  <span class="btn-small" (click)="sendGuess_click()">submit</span>
+                </div>
+                <div *ngIf="_guessed" class="answer-text">{{_guess}}</div>
+              </div>
             </div>
           </div>
+
           <div>
             <!-- TEAM 1 CHAT -->
             <div class="chatbox" *ngIf="_participant.role=='team1'">
@@ -259,6 +289,15 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <!-- TEAM GUESSES -->
+          <div class="flex-container-justifyh top-space-half">
+            <div class="team1-guess">
+              {{_gameSession.team1Guess}}
+            </div>
+            <div class="team2-guess">
+              {{_gameSession.team2Guess}}
+            </div>
           </div>
           <!-- GAME AREA -->
           <div class="flex-container-centerh top-space-half" style="width:100%">

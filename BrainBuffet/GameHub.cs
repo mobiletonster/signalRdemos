@@ -34,7 +34,7 @@ namespace BrainBuffet
 
         #region SignalR Client Invokable Endpoints
         // client invokable endpoints
-        public async Task Join(string role,Participant participant)
+        public async Task Join(string role, Participant participant)
         {
             if(JoinRole(role, participant))
             {
@@ -68,6 +68,21 @@ namespace BrainBuffet
         public async Task PushQuestion(Question question)
         { 
             await Clients.Groups("spectator","team1","team2").SendAsync("LoadQuestion", question);
+        }
+        public async Task GuessAnswer(Participant participant, string answer)
+        {
+            if (participant.Role == "team1")
+            {
+                _gameSession.Team1Guess = answer;
+            }else if (participant.Role == "team2")
+            {
+                _gameSession.Team2Guess = answer;
+            }
+            await Clients.Groups("host","spectator").SendAsync("GuessSent", participant.Role, answer);
+        }
+        public async Task RevealAnswer(Question question)
+        {
+            await Clients.Groups("spectator", "team1", "team2").SendAsync("AnswerRevealed", question, _gameSession);
         }
         #endregion
 

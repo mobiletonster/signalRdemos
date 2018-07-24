@@ -10,7 +10,9 @@ namespace BrainBuffet
     {
         public Participant Host { get; set; }
         public Team Team1 { get; set; }
+        public string Team1Guess { get; set; }
         public Team Team2 { get; set; }
+        public string Team2Guess { get; set; }
         public List<Participant> Spectators { get; set; }
 
         public GameSession()
