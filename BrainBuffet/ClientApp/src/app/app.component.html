@@ -196,8 +196,7 @@
               </div>
 
               <!-- GUESS BOX FOR CAPTAIN -->
-              <div style="margin-top:10px;" *ngIf="isCaptain() && _question && !_question.reveal">
-                <label>You, as team captain, submits guess:</label>
+              <div style="margin-top:10px;" *ngIf="isCaptain() && _question && !_question.reveal               <label>You, as team captain, submits guess:</label>
                 <div *ngIf="!_guessed" style="white-space:nowrap">
                   <input class="answer-box" [(ngModel)]="_guess" (keydown)="guessKeyDown($event)" />
                   <span class="btn-small" (click)="sendGuess_click()">submit</span>
