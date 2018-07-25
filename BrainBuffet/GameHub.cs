@@ -88,6 +88,23 @@ namespace BrainBuffet
             await Clients.All.SendAsync("GameState", _gameSession);
             await Clients.Groups("spectator", "team1", "team2").SendAsync("AnswerRevealed", question);
         }
+        public async Task AddScore(string team, int amount)
+        {
+            if (team == "team1")
+            {
+                _gameSession.Team1.Score += amount;
+            }else if (team == "team2")
+            {
+                _gameSession.Team2.Score += amount;
+            }
+            await Clients.All.SendAsync("GameState", _gameSession);
+        }
+        public async Task ResetScores()
+        {
+            _gameSession.Team1.Score = 0;
+            _gameSession.Team2.Score = 0;
+            await Clients.All.SendAsync("GameState", _gameSession);
+        }
         #endregion
 
         #region Private Methods
