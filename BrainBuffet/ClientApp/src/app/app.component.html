@@ -13,8 +13,9 @@
           <i [ngClass]="roleClass(_participant?.role)"></i>
         </span>
       </button>
-      <div class="dropdown-content">
+      <div class="dropdown-content" id="menu-items">
         <a href="javascript:void(0);" (click)="quitRole_click()"><i class="fas fa-window-close"></i> Quit Role</a>
+        <a *ngIf="_participant?.role=='host'" href="javascript:void(0);" (click)="resetScores_click()">Reset Scores</a>
       </div>
     </div>
 
@@ -75,58 +76,68 @@
           </div>
           <div class="flex-container-justifyh top-space-half">
             <!-- Team 1 Scores -->
-            <table class="team" id="team1">
-              <thead>
-                <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let member of _gameSession.team1?.members">
-                  <td colspan="2">{{member.name}}</td>
-                </tr>
-                <tr>
-                  <td><strong>Score:</strong></td>
-                  <td><strong>{{_gameSession?.team1?.score}}</strong></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div>
-              <div class="btn" style="width:150px;" href="javascript:void(0)" (click)="getRandomQuestion_click()">Next Question</div>
+            <div id="team1">
+              <table class="team">
+                <thead>
+                  <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of _gameSession.team1?.members">
+                    <td colspan="2">{{member.name}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Score:</strong></td>
+                    <td><strong>{{_gameSession?.team1?.score}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="flex-container-centerh" *ngIf="_question?.reveal">
+                <div class="score-btn" (click)="score_click('team1',-1)"> -1 </div>
+                <div class="score-btn" (click)="score_click('team1',+1)"> +1 </div>
+              </div>
+              <div *ngIf="_gameSession?.team1Guess" class="team1-guess">
+                {{_gameSession?.team1Guess}}
+              </div>
+            </div>
+            <!-- Next Question Button -->
+            <div id="next-button">
+              <div class="btn" href="javascript:void(0)" (click)="getRandomQuestion_click()">Next Question</div>
             </div>
             <!-- Team 2 Scores -->
-            <table class="team" id="team2">
-              <thead>
-                <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let member of _gameSession.team2?.members">
-                  <td colspan="2">{{member.name}}</td>
-                </tr>
-                <tr>
-                  <td><strong>Score:</strong></td>
-                  <td><strong>{{_gameSession?.team2?.score}}</strong></td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="team2">
+              <table class="team" id="team2">
+                <thead>
+                  <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of _gameSession.team2?.members">
+                    <td colspan="2">{{member.name}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Score:</strong></td>
+                    <td><strong>{{_gameSession?.team2?.score}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="flex-container-centerh" *ngIf="_question?.reveal">
+                <div class="score-btn" (click)="score_click('team2',-1)"> -1 </div>
+                <div class="score-btn" (click)="score_click('team2',+1)"> +1 </div>
+              </div>
+              <div *ngIf="_gameSession?.team2Guess" class="team2-guess">
+                {{_gameSession?.team2Guess}}
+              </div>
+            </div>
 
           </div>
-          <!-- TEAM GUESSES -->
-          <div class="flex-container-justifyh top-space-half">
-            <div class="team1-guess">
-              {{_gameSession.team1Guess}}
-            </div>
-            <div class="team2-guess">
-              {{_gameSession.team2Guess}}
-            </div>
-          </div>
+
           <!-- GAME AREA -->
-          <div class="flex-container-centerh top-space-half" style="width:100%">
+          <div class="flex-container-centerh" style="width:100%">
             <div class="flex-container-col">
               <div class="game-container" *ngIf="_question">
                 <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
                 <p class="game-text">{{_question?.questionText}}</p>
                 <div class="btn" *ngIf="!_question?.pushed" (click)="push_click(_question)">Push to contestants</div>
-                <div class="btn" *ngIf="!_question?.reveal" (click)="reveal_click()">Reveal answer</div>
+                <div class="btn reveal-btn" *ngIf="_question?.pushed && !_question?.reveal" (click)="reveal_click()">Reveal answer</div>
                 <div class="answer-text" *ngIf="_question?.reveal">
                   {{_question?.answerText}}
                 </div>
@@ -145,45 +156,48 @@
           </div>
           <div class="flex-container-justifyh top-space-half">
             <!-- Team 1 Scores -->
-            <table class="team" id="team1">
-              <thead>
-                <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let member of _gameSession.team1?.members">
-                  <td colspan="2">{{member.name}}</td>
-                </tr>
-                <tr>
-                  <td><strong>Score:</strong></td>
-                  <td><strong>{{_gameSession?.team1?.score}}</strong></td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="team1">
+              <table class="team" id="team1">
+                <thead>
+                  <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of _gameSession.team1?.members">
+                    <td colspan="2">{{member.name}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Score:</strong></td>
+                    <td><strong>{{_gameSession?.team1?.score}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="_gameSession?.team1Guess" class="team1-guess">
+                {{_gameSession?.team1Guess}}
+              </div>
+            </div>
             <!-- Team 2 Scores -->
-            <table class="team" id="team2">
-              <thead>
-                <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let member of _gameSession.team2?.members">
-                  <td colspan="2">{{member.name}}</td>
-                </tr>
-                <tr>
-                  <td><strong>Score:</strong></td>
-                  <td><strong>{{_gameSession?.team2?.score}}</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- TEAM GUESSES -->
-          <div class="flex-container-justifyh top-space-half" *ngIf="_question?.reveal">
-            <div class="team1-guess">
-              {{_gameSession.team1Guess}}
+            <div id="team2">
+              <table class="team" id="team2">
+                <thead>
+                  <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of _gameSession.team2?.members">
+                    <td colspan="2">{{member.name}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Score:</strong></td>
+                    <td><strong>{{_gameSession?.team2?.score}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="_gameSession?.team2Guess" class="team2-guess">
+                {{_gameSession?.team2Guess}}
+              </div>
             </div>
-            <div class="team2-guess">
-              {{_gameSession.team2Guess}}
-            </div>
+
           </div>
+
           <!-- GAME AREA -->
           <div class="flex-container-centerh top-space-half" style="width:100%">
             <div class="flex-container-col">
@@ -202,7 +216,10 @@
                   <input class="answer-box" [(ngModel)]="_guess" (keydown)="guessKeyDown($event)" />
                   <span class="btn-small" (click)="sendGuess_click()">submit</span>
                 </div>
-                <div *ngIf="_guessed" class="answer-text">{{_guess}}</div>
+                <div *ngIf="_guessed" style="display:flex;justify-content:center">
+                  <div  class="answer-text">{{_guess}}</div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -260,48 +277,28 @@
           </div>
           <div class="flex-container-justifyh top-space-half">
             <!-- Team 1 Scores -->
-            <table class="team" id="team1">
-              <thead>
-                <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let member of _gameSession.team1?.members">
-                  <td colspan="2">{{member.name}}</td>
-                </tr>
-                <tr>
-                  <td><strong>Score:</strong></td>
-                  <td><strong>{{_gameSession?.team1?.score}}</strong></td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Team 2 Scores -->
-            <table class="team" id="team2">
-              <thead>
-                <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let member of _gameSession.team2?.members">
-                  <td colspan="2">{{member.name}}</td>
-                </tr>
-                <tr>
-                  <td><strong>Score:</strong></td>
-                  <td><strong>{{_gameSession?.team2?.score}}</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- TEAM GUESSES -->
-          <div class="flex-container-justifyh top-space-half">
-            <div class="team1-guess">
-              {{_gameSession.team1Guess}}
+            <div id="team1">
+              <table class="team">
+                <thead>
+                  <tr><th colspan="2">Team 1 <i class="fab fa-rebel"></i></th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of _gameSession.team1?.members">
+                    <td colspan="2">{{member.name}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Score:</strong></td>
+                    <td><strong>{{_gameSession?.team1?.score}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="_gameSession?.team1Guess" class="team1-guess">
+                {{_gameSession?.team1Guess}}
+              </div>
             </div>
-            <div class="team2-guess">
-              {{_gameSession.team2Guess}}
-            </div>
-          </div>
-          <!-- GAME AREA -->
-          <div class="flex-container-centerh top-space-half" style="width:100%">
-            <div class="flex-container-col">
+            <!-- GAME AREA -->
+
+            <div id="spectator-game-area" class="flex-container-col">
               <div class="game-container" *ngIf="_question">
                 <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
                 <p class="game-text">{{_question?.questionText}}</p>
@@ -310,7 +307,30 @@
                 </div>
               </div>
             </div>
+
+            <!-- Team 2 Scores -->
+            <div id="team2">
+              <table class="team" id="team2">
+                <thead>
+                  <tr><th colspan="2">Team 2 <i class="fab fa-empire"></i></th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of _gameSession.team2?.members">
+                    <td colspan="2">{{member.name}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Score:</strong></td>
+                    <td><strong>{{_gameSession?.team2?.score}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="_gameSession?.team2Guess" class="team2-guess">
+                {{_gameSession?.team2Guess}}
+              </div>
+            </div>
           </div>
+
+
 
           <div class="flex-container-centerh" style="width:100%">
             <!-- TEAM 1 CHAT -->

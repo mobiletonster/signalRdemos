@@ -188,6 +188,19 @@ export class AppComponent implements OnInit {
     }
   }
 
+  public score_click(team: string, amount:number) {
+    if (this._hubConnection) {
+      this._hubConnection.invoke('AddScore', team, amount);
+    }
+  }
+
+  public resetScores_click() {
+    if (this._hubConnection) {
+      this._hubConnection.invoke('ResetScores');
+      document.getElementById("menu-items").style.display = "none";
+    }
+  }
+
   // ngClass Togglers
   isDisabledBtn(state: boolean) {
     if (state) {

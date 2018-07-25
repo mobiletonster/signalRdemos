@@ -88,227 +88,296 @@
 }
 
 .flex-container-justifyh {
-  display:flex;
-  justify-content:space-between;
-  flex-direction:row;
+  display: flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  flex-direction: row;
 }
 
-.btn > .badge, .btn-disabled > .badge {
-  padding: 4px;
-  background-color: #e02e1c;
-  border-radius: 40px;
-  color: white;
-  font-size: 16px;
-  height: 18px;
-  width: 18px;
-  float: right;
+@media screen and (min-width:557px) {
+  .flex-container-justifyh {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
 }
 
-.btn-disabled > .badge {
-  background-color: #214a5e;
-}
-
-.btn-large {
-  padding: 25px;
-  text-align: center;
-  font-weight: 800;
-  background-color: #ffd800;
-  border-radius: 5px;
-}
-
-  .btn-large > a {
-    color: #34728f;
-    text-decoration: none;
+  .btn > .badge, .btn-disabled > .badge {
+    padding: 4px;
+    background-color: #e02e1c;
+    border-radius: 40px;
+    color: white;
+    font-size: 16px;
+    height: 18px;
+    width: 18px;
+    float: right;
   }
 
-  .btn-large:hover {
-    cursor: pointer;
-    background-color: rgba(255, 216, 0, 0.80);
+  .btn-disabled > .badge {
+    background-color: #214a5e;
   }
 
-  .btn-large:active {
-    background-color: rgba(255, 216, 0, 0.55)
+  .btn-large {
+    padding: 25px;
+    text-align: center;
+    font-weight: 800;
+    background-color: #ffd800;
+    border-radius: 5px;
   }
 
+    .btn-large > a {
+      color: #34728f;
+      text-decoration: none;
+    }
 
-.btn {
-  margin: 20px;
-  padding: 15px;
-  background-color: #ffd800;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: 500;
-  color: #000000;
-}
+    .btn-large:hover {
+      cursor: pointer;
+      background-color: rgba(255, 216, 0, 0.80);
+    }
 
-  .btn:hover {
-    cursor: pointer;
-    color: #ff6a00;
-    background-color: rgba(255, 216, 0, 0.80);
+    .btn-large:active {
+      background-color: rgba(255, 216, 0, 0.55)
+    }
+
+
+  .btn {
+    margin: 20px;
+    padding: 15px;
+    background-color: #ffd800;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+    color: #000000;
   }
 
-    .btn:hover > a {
+    .btn:hover {
+      cursor: pointer;
       color: #ff6a00;
+      background-color: rgba(255, 216, 0, 0.80);
     }
 
-  .btn:active {
-    background-color: rgba(255, 216, 0, 0.55)
+      .btn:hover > a {
+        color: #ff6a00;
+      }
+
+    .btn:active {
+      background-color: rgba(255, 216, 0, 0.55)
+    }
+
+  .btn-disabled {
+    margin: 20px;
+    padding: 15px;
+    background-color: #81db1d;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+    color: #214a5e;
   }
 
-.btn-disabled {
-  margin: 20px;
-  padding: 15px;
-  background-color: #81db1d;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: 500;
-  color: #214a5e;
-}
-
-.btn-small {
-  margin: 10px;
-  padding: 6px 12px;
-  background-color: #ffd800;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: 500;
-  color: #000000;
-}
-.btn-small:hover {
-  cursor: pointer;
-  color: #ff6a00;
-  background-color: rgba(255, 216, 0, 0.80);
-}
-
-  .btn-small:hover > a {
-    color: #ff6a00;
+  .btn-small {
+    margin: 10px;
+    padding: 6px 12px;
+    background-color: #ffd800;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+    color: #000000;
   }
 
-.btn-small:active {
-  background-color: rgba(255, 216, 0, 0.55)
-}
+    .btn-small:hover {
+      cursor: pointer;
+      color: #ff6a00;
+      background-color: rgba(255, 216, 0, 0.80);
+    }
+
+      .btn-small:hover > a {
+        color: #ff6a00;
+      }
+
+    .btn-small:active {
+      background-color: rgba(255, 216, 0, 0.55)
+    }
 
 
 
-.team {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 120px;
-}
-
-  .team td, .team th {
-    border: none;
-    padding: 10px;
-    text-transform:capitalize;
+  .team {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 120px;
   }
 
-  .team tbody {
-    background-color: #f2f2f2;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
+    .team td, .team th {
+      border: none;
+      padding: 10px;
+      text-transform: capitalize;
+    }
 
-    .team tbody tr:last-child > td:first-child {
+    .team tbody {
+      background-color: #f2f2f2;
       border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
     }
 
-  .team tbody tr:last-child > td:last-child {
-    border-bottom-right-radius: 5px;
-  }
+      .team tbody tr:last-child > td:first-child {
+        border-bottom-left-radius: 5px;
+      }
+
+      .team tbody tr:last-child > td:last-child {
+        border-bottom-right-radius: 5px;
+      }
 
 
     .team tr:hover {
       background-color: #ddd;
     }
 
-  .team th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: center;
-    color: white;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  }
+    .team th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: center;
+      color: white;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
 
 #team1 {
-  float: left;
+  /*float: left;*/
+  order: 1;
+  margin:0px 5px;
 }
 
 #team2 {
-  float: right;
+  /*float: right;*/
+  order: 2;
+  margin: 0px 5px;
 }
 
-#team1 th {
-  background-color: rgba(23, 36, 142, 0.73);
+#next-button {
+  order: 3;
 }
-
-#team2 th {
-  background-color: rgba(142, 23, 23, 0.73);
-}
-
-.chatbox {
-  background-color: #214a5e;
-  margin:10px;
-  padding: 10px;
-  border-radius: 5px;
-  max-width: 500px;
-}
-.chatbox-messages {
-  overflow-y: auto;
-  height: 300px;
-  padding-right:8px;
-}
-.chatbox-input {
-  background-color: white;
-  color: #ff6a00;
-  border: none;
-  border-bottom: 2px solid #e7e304;
-  width:80%;
-  padding: 4px 4px;
-  margin: 4px 0;
-  box-sizing: border-box;
-  border-radius: 5px;
-  font-size: large;
-  letter-spacing: 2px;
-  font-weight: 400;
-  font-family: 'Titillium Web', sans-serif;
-}
-
-.send-btn {
-  color: white;
+.score-btn {
   margin: 10px;
-  vertical-align: middle;
-  font-size: 38px;
+  padding: 10px;
+  background-color: #ffd800;
+  border-radius: 50px;
+  border:none;
+  text-align: center;
+  font-weight: 800;
+  color: #e02e1c;
+  cursor:pointer;
 }
-.send-btn:hover{
-  color:#ffd800;
+.score-btn:hover {
+  background-color: rgba(255, 216, 0, 0.80);
 }
-.send-btn:active{
-  color:rgba(255, 216, 0, 0.55);
-}
-
-.speech-bubble-self {
-  clear: both;
-  float: right;
-  background: #67b015;
-  color: #e0e0e0;
-  margin: 2px;
-  padding: 8px;
-  border-radius: .4em;
+.xcore-btn:active{
+  background-color:rgba(255, 216, 0, 0.55);
 }
 
-.speech-bubble-other {
-  clear:both;
-  float: left;
-  background: #b7b7b7;
-  color:black;
-  margin:2px;
-  padding:8px;
-  border-radius: .4em;
+.reveal-btn {
+  background-color: #81db1d;
 }
+  .reveal-btn:hover {
+    background-color: rgba(129, 219, 29, 0.68);
+    color:black;
+  }
+  .reveal-btn:active {
+    background-color: rgba(129, 219, 29, 0.48);
+  }
+
+@media screen and (min-width:557px) {
+  #team1 {
+    /*float: left;*/
+    order: 1;
+  }
+
+  #team2 {
+    /*float: right;*/
+    order: 3;
+  }
+
+  #spectator-game-area{
+    order:2;
+  }
+  #next-button {
+    order: 2;
+  }
+}
+
+  #team1 th {
+    background-color: rgba(23, 36, 142, 0.73);
+  }
+
+  #team2 th {
+    background-color: rgba(142, 23, 23, 0.73);
+  }
+
+  .chatbox {
+    background-color: #214a5e;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 500px;
+  }
+
+  .chatbox-messages {
+    overflow-y: auto;
+    height: 300px;
+    padding-right: 8px;
+  }
+
+  .chatbox-input {
+    background-color: white;
+    color: #ff6a00;
+    border: none;
+    border-bottom: 2px solid #e7e304;
+    width: 80%;
+    padding: 4px 4px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-size: large;
+    letter-spacing: 2px;
+    font-weight: 400;
+    font-family: 'Titillium Web', sans-serif;
+  }
+
+  .send-btn {
+    color: white;
+    margin: 10px;
+    vertical-align: middle;
+    font-size: 38px;
+  }
+
+    .send-btn:hover {
+      color: #ffd800;
+    }
+
+    .send-btn:active {
+      color: rgba(255, 216, 0, 0.55);
+    }
+
+  .speech-bubble-self {
+    clear: both;
+    float: right;
+    background: #67b015;
+    color: #e0e0e0;
+    margin: 2px;
+    padding: 8px;
+    border-radius: .4em;
+  }
+
+  .speech-bubble-other {
+    clear: both;
+    float: left;
+    background: #b7b7b7;
+    color: black;
+    margin: 2px;
+    padding: 8px;
+    border-radius: .4em;
+  }
 
   .game-image {
-    max-width: 200px;
+    max-width: 180px;
     margin: 8px;
     border-radius: 5px;
   }
@@ -316,16 +385,63 @@
   .game-text {
     font-family: 'Cabin', sans-serif;
     font-weight: 600;
-    font-size: 28px;
+    font-size: 20px;
     padding: 8px;
     color: #ffd800;
     text-shadow: 4px 4px 4px #000000;
     text-align: center;
     letter-spacing: 2px;
-    max-width: 200px;
+    max-width: 180px;
   }
 
   .answer-text {
+    font-family: 'Cabin', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 8px;
+    color: #81db1d;
+    text-shadow: 3px 3px 7px #000000;
+    text-align: center;
+    letter-spacing: 2px;
+    max-width: 180px;
+  }
+
+  .game-container {
+    background-color: #214a5e;
+    border-radius: 5px;
+    padding: 10px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .answer-box {
+    background-color: white;
+    color: #ff6a00;
+    border: none;
+    border-bottom: 2px solid #e7e304;
+    width: 80%;
+    padding: 4px 4px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-size: large;
+    letter-spacing: 2px;
+    font-weight: 400;
+    font-family: 'Titillium Web', sans-serif;
+  }
+
+  @media screen and (min-width:500px) {
+    .game-image, .game-text, .answer-text {
+      max-width: 300px;
+      font-size: 20px;
+    }
+  }
+
+  .team1-guess {
+    background-color: #214a5e;
+    border-radius: 5px;
+    clear: both;
+    float: left;
     font-family: 'Cabin', sans-serif;
     font-weight: 600;
     font-size: 22px;
@@ -334,64 +450,22 @@
     text-shadow: 3px 3px 7px #000000;
     text-align: center;
     letter-spacing: 2px;
-    max-width: 200px;
+    max-width: 45%;
+    margin-top:4px;
   }
 
-  .game-container {
+  .team2-guess {
     background-color: #214a5e;
     border-radius: 5px;
-    padding: 10px;
+    float: right;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    padding: 8px;
+    color: #81db1d;
+    text-shadow: 3px 3px 7px #000000;
+    text-align: center;
+    letter-spacing: 2px;
+    max-width: 45%;
+    margin-top:4px;
   }
-
-.answer-box {
-  background-color: white;
-  color: #ff6a00;
-  border: none;
-  border-bottom: 2px solid #e7e304;
-  width: 80%;
-  padding: 4px 4px;
-  margin: 4px 0;
-  box-sizing: border-box;
-  border-radius: 5px;
-  font-size: large;
-  letter-spacing: 2px;
-  font-weight: 400;
-  font-family: 'Titillium Web', sans-serif;
-}
-
-@media screen and (min-width:500px) {
-  .game-image, .game-text, .answer-text {
-    max-width: 400px;
-  }
-}
-
-.team1-guess {
-  background-color:#214a5e;
-  border-radius:5px;
-  clear:both;
-  float:left;
-  font-family: 'Cabin', sans-serif;
-  font-weight: 600;
-  font-size: 22px;
-  padding: 8px;
-  color: #81db1d;
-  text-shadow: 3px 3px 7px #000000;
-  text-align: center;
-  letter-spacing: 2px;
-  max-width: 45%;
-}
-
-.team2-guess {
-  background-color: #214a5e;
-  border-radius: 5px;
-  float:right;
-  font-family: 'Cabin', sans-serif;
-  font-weight: 600;
-  font-size: 22px;
-  padding: 8px;
-  color: #81db1d;
-  text-shadow: 3px 3px 7px #000000;
-  text-align: center;
-  letter-spacing: 2px;
-  max-width: 45%;
-}
