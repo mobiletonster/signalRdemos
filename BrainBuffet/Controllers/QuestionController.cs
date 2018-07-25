@@ -141,7 +141,7 @@ namespace BrainBuffet.Controllers
                 "D&C 134 - Declaration on Government\r\n" +
                 "D&C 135 - Annoucement of the Martyrdom\r\n" +
                 "D&C 136 - Revelation through Brigham Young\r\n" +
-                "D&C 138 - Vision to Joseph F. Smith"
+                "D&C 138 - Vision of Joseph F. Smith"
             });
             _questions = q;
         }
