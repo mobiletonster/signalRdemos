@@ -184,6 +184,7 @@ export class AppComponent implements OnInit {
   public reveal_click() {
     if (this._hubConnection) {
       this._hubConnection.invoke('RevealAnswer', this._question);
+      this._question.reveal = true;
     }
   }
 
