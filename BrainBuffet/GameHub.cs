@@ -12,8 +12,7 @@ namespace BrainBuffet
     public class GameHub:Hub
     {
         public static GameSession _gameSession= new GameSession();
-        public GameHub(){
-        }
+        public GameHub(){}
 
         #region SignalR Events
         public override async Task OnConnectedAsync()
