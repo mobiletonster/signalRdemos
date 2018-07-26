@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   _team1Messages: ChatMessage[] = new Array<ChatMessage>();
   _team2Messages: ChatMessage[] = new Array<ChatMessage>();
   _spectatorMessages: ChatMessage[] = new Array<ChatMessage>();
+  _questionNumber: number = 1;
   _question: Question;
   _guess: string;
   _guessed: boolean;
@@ -164,10 +165,12 @@ export class AppComponent implements OnInit {
 
   public getRandomQuestion_click() {
     this._question = null;
-    this._questionService.getRandomQuestion().subscribe(question => {
+
+    this._questionService.getQuestionById(this._questionNumber).subscribe(question => {
       this._question = question;
       this._gameSession.team1Guess = null;
       this._gameSession.team2Guess = null;
+      this._questionNumber = this._question.id + 1;
       this.cd.detectChanges();
     })
   }

@@ -35,6 +35,22 @@ namespace BrainBuffet.Controllers
             return Ok(question);
         }
 
+        [HttpGet("api/questions/{id}")]
+        public IActionResult GetQuestionById(int id)
+        {
+            var count = _questions.Count();
+            if (id > count)
+            {
+                // start over at 1
+                var question = _questions.FirstOrDefault(m => m.Id == 1);
+                return Ok(question);
+            }
+            else
+            {
+                var question = _questions.FirstOrDefault(m => m.Id == id);
+                return Ok(question);
+            }
+        }
 
         private void InitializeQuestions()
         {
@@ -125,7 +141,7 @@ namespace BrainBuffet.Controllers
             q.Add(new Question()
             {
                 Id = ++index,
-                QuestionType = "text",
+                QuestionType = "image",
                 ImageUrl = "https://www.mormonnewsroom.org/media/480x640/book-of-mormon.jpg",
                 QuestionText = "How many pages are there in the Book of Mormon?",
                 AnswerText = "531"
@@ -133,7 +149,7 @@ namespace BrainBuffet.Controllers
             q.Add(new Question()
             {
                 Id = ++index,
-                QuestionType = "text",
+                QuestionType = "image",
                 ImageUrl = "https://askgramps.org/files/2015/02/doctrine-and-covenants-open.jpg",
                 QuestionText = "How many of the 138 sections in the D&C are not from Joseph Smith (revelations, visions, prayers, instructions)?",
                 AnswerText = "5\r\n" +

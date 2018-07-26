@@ -29,6 +29,15 @@ export class QuestionService {
       )
   }
 
+  public getQuestionById(id: number): Observable<Question> {
+    let options = { headers: this.headers };
+    var url = `api/questions/${id}`;
+    return this._httpClient.get<Question>(url, options)
+      .pipe(
+        catchError(err => this.handleError(err))
+      )
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     // In a real world app, you might use a remote logging infrastructure
