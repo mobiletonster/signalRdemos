@@ -1,0 +1,36 @@
+﻿@page
+
+<div class="row" id="join">
+    <input id="userInput" type="text" name="name" placeholder="Name" value="" class="col-sm-5" style="margin-right:5px;" />
+    <button id="joinButton" style="margin-right:5px;" class="col-sm-2">Join</button>
+    <button id="leaveButton" style="margin-right:5px; display:none;" class="col-sm-2">Leave</button>
+    <div class="col-sm-4" style="padding: 0px;">
+        <button id="readyButton" style="display:none;width: 100%;">Ready</button>
+    </div>
+    <br />
+</div>
+
+<div id="status">Welcome to SignalRType!</div>
+
+<div id="prompt" class="row non-selectable"></div>
+
+<div id="message"></div>
+
+<div id="players"></div>
+
+<!-- player template -->
+<div id="template">
+    <div class="row player">
+        <div id="userName"></div>
+        <input class="col-12" style="width:100%;" onpaste="return false;"/>
+    </div>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0"
+             aria-valuemin="0" aria-valuemax="100" style="width:0%">
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/signalr.js"></script>
+<script src="~/js/type.js"></script>
