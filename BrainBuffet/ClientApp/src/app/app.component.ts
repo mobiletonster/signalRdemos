@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef  } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { HubConnection } from '@aspnet/signalr';
 import * as signalR from '@aspnet/signalr';
@@ -11,7 +11,8 @@ import { Question } from './models/Question';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 
 export class AppComponent implements OnInit {
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
   _guess: string;
   _guessed: boolean;
 
-  constructor(private _questionService: QuestionService) { }
+  constructor(private _questionService: QuestionService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
 
@@ -41,16 +42,14 @@ export class AppComponent implements OnInit {
     this._hubConnection.on('Connected', (participant: Participant) => {
       // on connected, get initial state of participant (with connection id only)
       this._participant = participant;
+      this.cd.detectChanges();
     });
 
     this._hubConnection.on('Joined', (participant: Participant) => {
       // on join, get updated participant with assigned role.
-      this._participant = participant;
-      if (participant.role == "team1" || participant.role == "team2") {
-        this._startupState = "team";
-      } else {
-        this._startupState = participant.role;
-      }
+      this._startupState = participant.role;
+      this._participant.role = participant.role;
+      this.cd.detectChanges();
     });
 
     this._hubConnection.on('Left', (participant: Participant) => {
@@ -61,20 +60,24 @@ export class AppComponent implements OnInit {
       this._spectatorMessages = new Array<ChatMessage>();
       this._team1Messages = new Array<ChatMessage>();
       this._team2Messages = new Array<ChatMessage>();
+      this.cd.detectChanges();
     })
 
     this._hubConnection.on('GameState', (gameSession: GameSession) => {
       this._gameSession = gameSession;
+      this.cd.detectChanges();
     });
 
     this._hubConnection.on('TeamMessage', (team:string, name: string, message: string) => {
       this.addChatMessage(team, new ChatMessage(name, message, false));
+      this.cd.detectChanges();
     })
 
     this._hubConnection.on('LoadQuestion', (question: Question) => {
       this._question = question;
       this._guess = null;
       this._guessed = false;
+      this.cd.detectChanges();
     })
 
     this._hubConnection.on('GuessSent', (team: string, guess: string) => {
@@ -83,11 +86,13 @@ export class AppComponent implements OnInit {
       } else if (team == "team2") {
         this._gameSession.team2Guess = guess;
       }
+      this.cd.detectChanges();
     })
 
     this._hubConnection.on('AnswerRevealed', (question: Question) => {
       this._question.answerText = question.answerText;
       this._question.reveal = true;
+      this.cd.detectChanges();
     })
 
   }
@@ -140,7 +145,9 @@ export class AppComponent implements OnInit {
 
   public quitRole_click() {
     if (this._hubConnection) {
-      this._hubConnection.invoke('QuitRole', this._participant);
+      this._hubConnection.invoke('QuitRole', this._participant).catch(reason => {
+        console.log(reason);
+      });
     }
   }
 
@@ -150,7 +157,9 @@ export class AppComponent implements OnInit {
       this.addChatMessage(this._participant.role,new ChatMessage(this._participant.name, this._chat, true));
       this._hubConnection.invoke('TeamChat', this._participant, this._chat);
       this._chat = "";
+      this.cd.markForCheck();
     }
+    this.cd.detectChanges();
   }
 
   public getRandomQuestion_click() {
@@ -159,6 +168,7 @@ export class AppComponent implements OnInit {
       this._question = question;
       this._gameSession.team1Guess = null;
       this._gameSession.team2Guess = null;
+      this.cd.detectChanges();
     })
   }
 
@@ -171,6 +181,7 @@ export class AppComponent implements OnInit {
     if (this._hubConnection) {
       this._hubConnection.invoke('PushQuestion', pushQuestion);
       this._question.pushed = true;
+      this.cd.detectChanges();
     }
   }
 
@@ -178,14 +189,18 @@ export class AppComponent implements OnInit {
     if (this._hubConnection) {
       this._hubConnection.invoke('GuessAnswer', this._participant, this._guess);
       this._guessed = true;
+      this.cd.markForCheck();
     }
+    this.cd.detectChanges();
   }
 
   public reveal_click() {
     if (this._hubConnection) {
       this._hubConnection.invoke('RevealAnswer', this._question);
       this._question.reveal = true;
+      this.cd.markForCheck();
     }
+    this.cd.detectChanges();
   }
 
   public score_click(team: string, amount:number) {
@@ -197,7 +212,6 @@ export class AppComponent implements OnInit {
   public resetScores_click() {
     if (this._hubConnection) {
       this._hubConnection.invoke('ResetScores');
-      document.getElementById("menu-items").style.display = "none";
     }
   }
 

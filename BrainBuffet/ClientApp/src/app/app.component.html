@@ -149,7 +149,7 @@
       </div>
 
       <!-- TEAM page -->
-      <div class="flex-container-centerh" *ngIf="_startupState=='team'">
+      <div class="flex-container-centerh" *ngIf="_startupState=='team1' || _startupState=='team2'">
         <div class="flex-container-centerv" style="width:90%">
           <div class="flex-container-col" style="text-align:center">
             <h2 class="capitalize">{{_participant?.role}} <i [ngClass]="roleClass(_participant?.role)"></i></h2>
