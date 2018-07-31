@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace BrainBuffet.Controllers
 {
+    [ApiController]
     public class QuestionController: Controller
     {
         private static readonly Random getrandom = new Random();
@@ -27,28 +28,31 @@ namespace BrainBuffet.Controllers
         }
 
         [HttpGet("api/questions/random")]
-        public IActionResult GetRandomQuestion()
+        public ActionResult<Question> GetRandomQuestion()
         {
             var count = _questions.Count();
             int next = GetRandomNumber(1, count + 1);
             var question = _questions.FirstOrDefault(m => m.Id == next);
-            return Ok(question);
+            //return Ok(question);
+            return question;
         }
 
         [HttpGet("api/questions/{id}")]
-        public IActionResult GetQuestionById(int id)
+        public ActionResult<Question> GetQuestionById(int id)
         {
             var count = _questions.Count();
             if (id > count)
             {
                 // start over at 1
                 var question = _questions.FirstOrDefault(m => m.Id == 1);
-                return Ok(question);
+                //return Ok(question);
+                return question;
             }
             else
             {
                 var question = _questions.FirstOrDefault(m => m.Id == id);
-                return Ok(question);
+                // return Ok(question);
+                return question;
             }
         }
 
