@@ -5,6 +5,7 @@
       <h1 class="title strokeme"> Brain <i class="fab fa-envira logo"></i> Buffet! </h1>
       <h2 *ngIf="!_participant?.name" class="subtitle">The game for brainiacs</h2>
     </div>
+
     <!-- User Connected Menu -->
     <div class="dropdown pull-right" *ngIf="_participant?.name">
       <button class="dropbtn">
@@ -15,7 +16,7 @@
       </button>
       <div class="dropdown-content" id="menu-items">
         <a href="javascript:void(0);" (click)="quitRole_click()"><i class="fas fa-window-close"></i> Quit Role</a>
-        <a *ngIf="_participant?.role=='host'" href="javascript:void(0);" (click)="resetScores_click()">Reset Scores</a>
+        <a *ngIf="_participant?.role=='host'" href="javascript:void(0);" (click)="resetRound_click()">Reset Round (new game)</a>
       </div>
     </div>
 
@@ -134,8 +135,13 @@
           <div class="flex-container-centerh" style="width:100%">
             <div class="flex-container-col">
               <div class="game-container" *ngIf="_question">
-                <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
-                <p class="game-text">{{_question?.questionText}}</p>
+                <p class="game-text">{{_questionNumber}} - {{_question.round}}</p>
+                <p class="answer-text">{{_question.category}}  - {{_question.value}}</p>
+                <img class="game-image" *ngIf="_question?.mediaType=='image'" src="{{_question?.mediaUrl}}" />
+                <audio *ngIf="_question?.mediaType=='audio'" src="{{_question?.mediaUrl}}" />
+                <video *ngIf="_question?.mediaType=='video'" src="{{_question?.mediaUrl}}" />
+                <p *ngIf="!_question?.media"  class="game-text">{{_question?.questionText}}</p>
+                <p *ngIf="_question?.media" class="game-text" [innerHTML]="_question?.questionText"></p>
                 <div class="btn" *ngIf="!_question?.pushed" (click)="push_click(_question)">Push to contestants</div>
                 <div class="btn reveal-btn" *ngIf="_question?.pushed && !_question?.reveal" (click)="reveal_click()">Reveal answer</div>
                 <div class="answer-text" *ngIf="_question?.reveal">
@@ -202,6 +208,8 @@
           <div class="flex-container-centerh top-space-half" style="width:100%">
             <div class="flex-container-col">
               <div class="game-container" *ngIf="_question">
+                <p class="game-text">{{_questionNumber}} - {{_question.round}}</p>
+                <p class="answer-text">{{_question.category}}  - {{_question.value}}</p>
                 <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
                 <p class="game-text">{{_question?.questionText}}</p>
                 <div class="answer-text" *ngIf="_question?.reveal">
@@ -300,6 +308,8 @@
 
             <div id="spectator-game-area" class="flex-container-col">
               <div class="game-container" *ngIf="_question">
+                <p class="game-text">{{_questionNumber}} - {{_question.round}}</p>
+                <p class="answer-text">{{_question.category}}  - {{_question.value}}</p>
                 <img class="game-image" *ngIf="_question?.questionType=='image'" src="{{_question?.imageUrl}}" />
                 <p class="game-text">{{_question?.questionText}}</p>
                 <div class="answer-text" *ngIf="_question?.reveal">
@@ -385,7 +395,6 @@
           </div>
         </div>
       </div>
-
 
       <!-- ROUTER outlet -->
       <router-outlet></router-outlet>

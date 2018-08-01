@@ -20,6 +20,15 @@ export class QuestionService {
     });
   }
 
+  public getRandomList(howmany: number): Observable<number[]> {
+    let options = { headers: this.headers };
+    var url = `api/questions/randomlist/${howmany}`
+    return this._httpClient.get<number[]>(url, options)
+      .pipe(
+        catchError(err => this.handleError(err))
+      )
+  }
+
   public getRandomQuestion(): Observable<Question> {
     let options = { headers: this.headers };
     var url = 'api/questions/random';

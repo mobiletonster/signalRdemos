@@ -11,7 +11,9 @@ namespace BrainBuffet.Controllers
     [ApiController]
     public class QuestionController: Controller
     {
+        private readonly IDocumentDBRepository<Question> _repository;
         private static readonly Random getrandom = new Random();
+
 
         public static int GetRandomNumber(int min, int max)
         {
@@ -22,9 +24,22 @@ namespace BrainBuffet.Controllers
         }
         private List<Question> _questions;
 
-        public QuestionController()
+        public QuestionController(IDocumentDBRepository<Question> repository)
         {
+            this._repository = repository;
             InitializeQuestions();
+        }
+
+        [HttpGet("api/questions/randomlist/{howmany}")]
+        public ActionResult<List<int>> GetRandomList(int howmany)
+        {
+            int max = 170000;
+            var randomlist = new List<int>();
+            for(int i = 1; i <= howmany; i++)
+            {
+                randomlist.Add(getrandom.Next(1, max));
+            }
+            return randomlist;
         }
 
         [HttpGet("api/questions/random")]
@@ -38,8 +53,9 @@ namespace BrainBuffet.Controllers
         }
 
         [HttpGet("api/questions/{id}")]
-        public ActionResult<Question> GetQuestionById(int id)
+        public async Task<ActionResult<Question>> GetQuestionById(int id)
         {
+            return await _repository.GetItemAsync(id.ToString());
             var count = _questions.Count();
             if (id > count)
             {

@@ -26,7 +26,8 @@ export class AppComponent implements OnInit {
   _team1Messages: ChatMessage[] = new Array<ChatMessage>();
   _team2Messages: ChatMessage[] = new Array<ChatMessage>();
   _spectatorMessages: ChatMessage[] = new Array<ChatMessage>();
-  _questionNumber: number = 1;
+  _randomList: number[];
+  _questionNumber: number = 0;
   _question: Question;
   _guess: string;
   _guessed: boolean;
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/api/gamehub')
+      .withUrl('api/gamehub')
       .configureLogging(signalR.LogLevel.Debug)
       .build();
 
@@ -50,6 +51,10 @@ export class AppComponent implements OnInit {
       // on join, get updated participant with assigned role.
       this._startupState = participant.role;
       this._participant.role = participant.role;
+      if (participant.role == 'host') {
+        // new host joined, reset the game
+        this.resetRound_click();
+      }
       this.cd.detectChanges();
     });
 
@@ -165,12 +170,19 @@ export class AppComponent implements OnInit {
 
   public getRandomQuestion_click() {
     this._question = null;
+    if (this._questionNumber > 19) {
+      this._questionNumber = 0;
+    }
+    var questionId = this._randomList[this._questionNumber];
+    console.log(this._questionNumber + ' ' + questionId);
 
-    this._questionService.getQuestionById(this._questionNumber).subscribe(question => {
+    this._questionNumber = this._questionNumber + 1;
+
+    this._questionService.getQuestionById(questionId).subscribe(question => {
+      console.log(question);
       this._question = question;
       this._gameSession.team1Guess = null;
       this._gameSession.team2Guess = null;
-      this._questionNumber = this._question.id + 1;
       this.cd.detectChanges();
     })
   }
@@ -212,10 +224,16 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public resetScores_click() {
+  public resetRound_click() {
     if (this._hubConnection) {
       this._hubConnection.invoke('ResetScores');
     }
+    this._questionService.getRandomList(20).subscribe(randList => {
+      this._questionNumber = 0;
+      this._question = null;
+      this._randomList = randList;
+      this.cd.detectChanges();
+    })
   }
 
   // ngClass Togglers
