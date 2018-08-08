@@ -25,7 +25,7 @@ namespace BrainBuffet.Services
 
         public int GetQuestionCount()
         {
-            return _context.Questions.Count();
+            return _context.Questions.Max(m => m.Id);
         }
     }
 }

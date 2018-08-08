@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BrainBuffet.Models
 {
+    [Table("Question")]
     public class Question
     {
         public int Id { get; set; }
@@ -15,6 +17,7 @@ namespace BrainBuffet.Models
         public string Round { get; set; }
         public string Category { get; set; }
         public string Value { get; set; }
+        [NotMapped]
         public string QuestionType { get; set; }
         public bool Media { get; set; }
         public string MediaType { get
@@ -45,12 +48,9 @@ namespace BrainBuffet.Models
                 return "text";
             } }
         public string MediaUrl { get; set; }
+        [NotMapped]
         public string ImageUrl { get; set; }
-        [JsonProperty("Question")]
-        public string  question { get; set; }
-        [JsonProperty("Answer")]
-        public string Answer { get; set; }
-        public string QuestionText { get { return question; } set { question = value; } }
-        public string AnswerText { get { return Answer; }  set { Answer = value; } }
+        public string  QuestionText { get; set; }
+        public string AnswerText { get; set; }
     }
 }

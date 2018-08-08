@@ -38,8 +38,15 @@ namespace BrainBuffet
 
             services.AddMvc();
             services.AddDbContext<BrainBuffetContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("BrainBuffetContext"))
-            );
+            {
+                var connString = Configuration.GetConnectionString("BrainBuffetContext");
+                if (string.IsNullOrEmpty(connString))
+                {
+                    connString = Configuration.GetValue<string>("BrainBuffetContext");
+                }
+                options.UseSqlServer(connString);
+            });
+
             services.AddScoped<QuestionService>();
             services.AddSignalR();
             services.AddCors(options => options.AddPolicy("CorsPolicy",
