@@ -1,4 +1,5 @@
 ﻿using BrainBuffet.Models;
+using BrainBuffet.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,8 @@ namespace BrainBuffet.Controllers
     [ApiController]
     public class QuestionController: Controller
     {
-        private readonly IDocumentDBRepository<Question> _repository;
+        private readonly QuestionService _questionService;
+        private int _questionCount;
         private static readonly Random getrandom = new Random();
 
 
@@ -24,16 +26,16 @@ namespace BrainBuffet.Controllers
         }
         private List<Question> _questions;
 
-        public QuestionController(IDocumentDBRepository<Question> repository)
+        public QuestionController(QuestionService questionService)
         {
-            this._repository = repository;
-            InitializeQuestions();
+            this._questionService = questionService;
+            this._questionCount = this._questionService.GetQuestionCount();
         }
 
         [HttpGet("api/questions/randomlist/{howmany}")]
         public ActionResult<List<int>> GetRandomList(int howmany)
         {
-            int max = 170000;
+            int max = this._questionCount;
             var randomlist = new List<int>();
             for(int i = 1; i <= howmany; i++)
             {
@@ -53,23 +55,9 @@ namespace BrainBuffet.Controllers
         }
 
         [HttpGet("api/questions/{id}")]
-        public async Task<ActionResult<Question>> GetQuestionById(int id)
+        public ActionResult<Question> GetQuestionById(int id)
         {
-            return await _repository.GetItemAsync(id.ToString());
-            var count = _questions.Count();
-            if (id > count)
-            {
-                // start over at 1
-                var question = _questions.FirstOrDefault(m => m.Id == 1);
-                //return Ok(question);
-                return question;
-            }
-            else
-            {
-                var question = _questions.FirstOrDefault(m => m.Id == id);
-                // return Ok(question);
-                return question;
-            }
+            return _questionService.GetQuestionById(id);
         }
 
         private void InitializeQuestions()
