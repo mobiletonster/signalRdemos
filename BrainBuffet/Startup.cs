@@ -2,16 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BrainBuffet.Data;
 using BrainBuffet.Models;
+using BrainBuffet.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BrainBuffet
 {
     public class Startup
     {
+        private static IConfiguration Configuration;
+        public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -24,7 +37,10 @@ namespace BrainBuffet
             });
 
             services.AddMvc();
-            services.AddSingleton<IDocumentDBRepository<Question>>(new DocumentDBRepository<Question>());
+            services.AddDbContext<BrainBuffetContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("BrainBuffetContext"))
+            );
+            services.AddScoped<QuestionService>();
             services.AddSignalR();
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>
