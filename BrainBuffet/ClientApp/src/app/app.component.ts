@@ -190,8 +190,15 @@ export class AppComponent implements OnInit {
   public push_click(question: Question) {
     let pushQuestion = new Question();
     pushQuestion.id = question.id;
+    pushQuestion.questionNumber = this._questionNumber;
     pushQuestion.questionType = question.questionType;
     pushQuestion.questionText = question.questionText;
+    pushQuestion.category = question.category;
+    pushQuestion.value = question.value;
+    pushQuestion.round = question.round;
+    pushQuestion.media = question.media;
+    pushQuestion.mediaType = question.mediaType;
+    pushQuestion.mediaUrl = question.mediaUrl;
     pushQuestion.imageUrl = question.imageUrl;
     if (this._hubConnection) {
       this._hubConnection.invoke('PushQuestion', pushQuestion);

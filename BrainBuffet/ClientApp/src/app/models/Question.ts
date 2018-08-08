@@ -1,5 +1,6 @@
 export class Question {
   public id: number;
+  public questionNumber: number;
   public showNumber: string;
   public airDate: Date;
   public round: string;

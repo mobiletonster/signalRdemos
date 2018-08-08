@@ -138,8 +138,8 @@
                 <p class="game-text">{{_questionNumber}} - {{_question.round}}</p>
                 <p class="answer-text">{{_question.category}}  - {{_question.value}}</p>
                 <img class="game-image" *ngIf="_question?.mediaType=='image'" src="{{_question?.mediaUrl}}" />
-                <audio *ngIf="_question?.mediaType=='audio'" src="{{_question?.mediaUrl}}" />
-                <video *ngIf="_question?.mediaType=='video'" src="{{_question?.mediaUrl}}" />
+                <audio *ngIf="_question?.mediaType=='audio'" src="{{_question?.mediaUrl}}" ></audio>
+                <video *ngIf="_question?.mediaType=='video'" src="{{_question?.mediaUrl}}" ></video>
                 <p *ngIf="!_question?.media"  class="game-text">{{_question?.questionText}}</p>
                 <p *ngIf="_question?.media" class="game-text" [innerHTML]="_question?.questionText"></p>
                 <div class="btn" *ngIf="!_question?.pushed" (click)="push_click(_question)">Push to contestants</div>
