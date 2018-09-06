@@ -5,6 +5,8 @@
     <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
     <SpaRoot>ClientApp\</SpaRoot>
     <Version>1.0.1</Version>
+    <UserSecretsId>51aafc94-f746-4a53-bfe1-0372b19d827f</UserSecretsId>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
