@@ -48,6 +48,7 @@ namespace BrainBuffet
             });
 
             services.AddScoped<QuestionService>();
+            services.AddScoped<CosmosQuestionService>();
             services.AddSignalR();
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>

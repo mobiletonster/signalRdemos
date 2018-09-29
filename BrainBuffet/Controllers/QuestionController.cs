@@ -12,7 +12,7 @@ namespace BrainBuffet.Controllers
     [ApiController]
     public class QuestionController: Controller
     {
-        private readonly QuestionService _questionService;
+        private readonly CosmosQuestionService _questionService;
         private int _questionCount;
         private static readonly Random getrandom = new Random();
 
@@ -26,7 +26,7 @@ namespace BrainBuffet.Controllers
         }
         private List<Question> _questions;
 
-        public QuestionController(QuestionService questionService)
+        public QuestionController(CosmosQuestionService questionService)
         {
             this._questionService = questionService;
             this._questionCount = this._questionService.GetQuestionCount();
@@ -55,7 +55,7 @@ namespace BrainBuffet.Controllers
         }
 
         [HttpGet("api/questions/{id}")]
-        public ActionResult<Question> GetQuestionById(int id)
+        public ActionResult<Jeopardy> GetQuestionById(int id)
         {
             return _questionService.GetQuestionById(id);
         }
