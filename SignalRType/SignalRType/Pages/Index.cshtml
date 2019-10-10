@@ -1,9 +1,10 @@
 ﻿@page
 
-<div class="row" id="join">
-    <input id="userInput" type="text" name="name" placeholder="Name" value="" class="col-sm-5" style="margin-right:5px;" />
-    <button id="joinButton" style="margin-right:5px;" class="col-sm-2">Join</button>
-    <button id="leaveButton" style="margin-right:5px; display:none;" class="col-sm-2">Leave</button>
+<div class="user-container">
+    <input id="user" type="text" name="name" placeholder="Name" value=""/>
+    <button id="joinButton" style="margin-right:5px;" >Join</button>
+    <button id="leaveButton" style="margin-right:5px; display:none;">Leave</button>
+    <button id="nextButton" style="margin-right:5px; display:none;">Next</button>
     <div class="col-sm-4" style="padding: 0px;">
         <button id="readyButton" style="display:none;width: 100%;">Ready</button>
     </div>
@@ -18,11 +19,13 @@
 
 <div id="players"></div>
 
+<button id="refreshButton" style="margin-right:5px;">Start Over</button>
+
 <!-- player template -->
 <div id="template">
     <div class="row player">
         <div id="userName"></div>
-        <input class="col-12" style="width:100%;" onpaste="return false;"/>
+        <input class="col-12 typeInput" style="width:100%;" onpaste="return false;"/>
     </div>
     <div class="progress">
         <div class="progress-bar" role="progressbar" aria-valuenow="0"

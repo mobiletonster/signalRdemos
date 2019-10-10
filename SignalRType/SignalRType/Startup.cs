@@ -47,10 +47,9 @@ namespace SignalRType
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
+   
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSignalR(routes =>

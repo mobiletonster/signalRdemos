@@ -28,15 +28,15 @@ namespace SignalRType
         public async Task SendNewPlayer(string user)
         {
             _session.Players.Add(new Participant(Context.ConnectionId, user));
-            await Clients.Others.SendAsync("RecieveNewPlayer", user, Context.ConnectionId, false);
-            await Clients.Caller.SendAsync("RecieveNewPlayer", user, Context.ConnectionId, true);
+            await Clients.Others.SendAsync("ReceiveNewPlayer", user, Context.ConnectionId, false);
+            await Clients.Caller.SendAsync("ReceiveNewPlayer", user, Context.ConnectionId, true);
         }
 
         public async Task SendProgress(int progress, string text)
         {
             Participant player = _session.Players.Find(p => p.ConnectionId == Context.ConnectionId);
-            await Clients.Others.SendAsync("RecieveProgress", player, progress, text, false);
-            await Clients.Caller.SendAsync("RecieveProgress", player, progress, text, true);
+            await Clients.Others.SendAsync("ReceiveProgress", player, progress, text, false);
+            await Clients.Caller.SendAsync("ReceiveProgress", player, progress, text, true);
         }
 
         public async Task SendStartStatus()
@@ -47,6 +47,26 @@ namespace SignalRType
             int numReady = _session.Players.FindAll(p => p.IsReady == true).Count;
 
             await Clients.All.SendAsync("UpdateStartStatus", numInGame, numReady);
+        }
+
+        public async Task SendReset()
+        {
+            foreach (var player in _session.Players)
+            {
+                player.IsReady = false;
+            }
+
+            int numInGame = _session.Players.Count;
+            int numReady = _session.Players.FindAll(p => p.IsReady == true).Count;
+
+            await Clients.All.SendAsync("ReceiveNext", numInGame, numReady);
+        }
+
+
+        public async Task SendPlayerReset()
+        {
+            _session.Players = new List<Participant>();
+            await Clients.All.SendAsync("PlayerReset");
         }
         #endregion
     }

@@ -32,8 +32,30 @@ body {
     margin: 10px 0px;
 }
 
-#join {
+.user-container {
     margin: 20px 0px;
+    display: flex;
+}
+
+#user {
+    border: solid thin gray;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+input {
+    border: solid thin gray;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+button {
+    border: solid thin gray;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 10px;
 }
 
 #status {

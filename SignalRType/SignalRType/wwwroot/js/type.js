@@ -1,7 +1,15 @@
-﻿
-var prompt = "This is a test to see who can type the fastest.";
+﻿var prompt;
+var promptIndex = 0;
+var prompts = [
+    "This is a test to see who can type the fastest.",
+    "Adam fell that men might be; and men are, that they might have joy.",
+    "I am a child of God, and he has sent me here, has given me an earthly home with parents kind and dear.",
+    "From the Conference Center at Temple Square in Salt Lake City, this is the Saturday morning session of the 189th annual General Conference."  
+];
 
-// create SignalR connection
+
+
+// SignalR HubConnection
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/typeHub")
     .build();
@@ -13,11 +21,11 @@ connection.on("LoadPlayers", players => {
     });
 });
 
-connection.on("RecieveNewPlayer", (user, id, isUser) => {
+connection.on("ReceiveNewPlayer", (user, id, isUser) => {
     createPlayer(user, id, isUser);
 });
 
-connection.on("RecieveProgress", (player, progress, text, isUser) => {
+connection.on("ReceiveProgress", (player, progress, text, isUser) => {
     var { connectionId, name } = player;
     var input = document.getElementById(connectionId).querySelector("input");
     var progressBar = document.getElementById(connectionId).querySelector(".progress-bar");
@@ -37,6 +45,10 @@ connection.on("RecieveProgress", (player, progress, text, isUser) => {
             progressBar.style.backgroundColor = "#05b919";
             var winMessage = `${name} WINS!`;
             document.getElementById("message").innerHTML = winMessage.toUpperCase();
+            input.setAttribute('disabled', 'true');
+            console.log(document.querySelectorAll('.typeInput'));
+            document.querySelectorAll('.typeInput').forEach(i => i.setAttribute('disabled', 'true'))
+            document.getElementById("nextButton").style.display = "block";
         } else {
             progressBar.style.backgroundColor = "#dc1d1d";
         }
@@ -52,19 +64,43 @@ connection.on("UpdateStartStatus", (numInGame, numReady) => {
     {
         document.getElementById("status").innerHTML = `All players are ready to start. Prepare to type!`;
         setTimeout(() => {
+            prompt = prompts[promptIndex];
             document.getElementById("prompt").innerHTML = prompt;
             document.getElementById("status").style.visibility = "hidden";
         }, 3000);
     }
 });
 
+connection.on("ReceiveNext", (numInGame, numReady) => {
+    promptIndex = promptIndex + 1;
+    console.log("index", promptIndex);
+    document.getElementById("readyButton").style.display = "block";
+    document.getElementById("joinButton").style.display = "none";
+    document.getElementById("leaveButton").style.display = "none";
+    document.getElementById("nextButton").style.display = "none";
+    document.getElementById("message").innerHTML = "";
+    document.getElementById("status").style.visibility = "visible";
+    document.querySelectorAll('.typeInput')[0].removeAttribute('disabled');
+    document.querySelectorAll('.typeInput').forEach(i => i.value = '');
+    document.querySelectorAll('.progress-bar').forEach(p => p.style.width = 0);
+
+    if (numReady < numInGame) {
+        document.getElementById("status").innerHTML = `${numInGame} players have joined. ${numReady}/${numInGame} are ready to start.`;
+    }
+});
+
+connection.on("PlayerReset", () => {
+    location.reload();
+});
 
 connection.start().catch(err => console.error(err.toString()));
 
 
+
+// Event Handlers
 document.getElementById("joinButton").addEventListener("click", e => {
     console.log("Sending new player")
-    const user = document.getElementById("userInput").value;
+    const user = document.getElementById("user").value;
     connection.invoke("SendNewPlayer", user);
     e.preventDefault();
 });
@@ -74,7 +110,18 @@ document.getElementById("readyButton").addEventListener("click", e => {
     document.getElementById("readyButton").style.display = "none";
 });
 
+document.getElementById("nextButton").addEventListener("click", e => {
+    connection.invoke("SendReset")
+    document.getElementById("nextButton").style.display = "none";
+});
 
+
+document.getElementById("refreshButton").addEventListener("click", e => {
+    connection.invoke("SendPlayerReset")
+});
+
+
+// DOM Builders
 function createPlayer(user, id, isUser) {
     console.log("Incoming new player");
 
@@ -97,7 +144,7 @@ function createPlayer(user, id, isUser) {
         // add to top of player list
         document.getElementById("players").prepend(player);
         document.getElementById("readyButton").style.display = "block";
-        document.getElementById("userInput").disabled = true;
+        document.getElementById("user").disabled = true;
         document.getElementById("joinButton").style.display = "none";
         document.getElementById("leaveButton").style.display = "block";
     }
